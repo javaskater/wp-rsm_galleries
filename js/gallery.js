@@ -153,25 +153,73 @@
 			onLoadEnd:	 	function() { captionOn(); activityIndicatorOff(); }
 		});
 		
-		//adding the Image Lightbox effect to the Twitter  BootStrap Carousel
-		$(".carousel_image").each(function(){
-			var href_image=$(this).attr("src");
-			var lien_image = $('<a>');
-			lien_image.attr('href',href_image);
-			lien_image.attr('data-imagelightbox','f');
-			lien_image.addClass("carousel_lien_for_lightbox");
+		/*
+		 * Partie Elastiside Plugin https://github.com/codrops/Elastislide
+		 
+		$('.elastislide-list').elastislide({
+			minItems: 2,
+			start: 2
+		});*/
+		//adding the Image Lightbox effect to the Elastiside Image Slider
+		//$(".elastislide-list").each(function(){
+		//var href_image=$(this).attr("src");
+		//var lien_image = $('<a>');
+		//lien_image.attr('href',href_image);
+		//lien_image.attr('data-imagelightbox','f');
+		//lien_image.addClass("carousel_lien_for_lightbox");
 			//http://api.jquery.com/wrap/ adding a < a href="" link around an image
-			$(this).wrap(lien_image);
+		//$(this).wrap(lien_image);
+		//});
+		/*
+		 * https://github.com/codrops/Slicebox/ voir exemples
+		 * Adaptation pour prendr en compte plusieurs objets de type SliceBox sur la même page !!!!!
+		 * On ne garde que les classes CSS et on oblie les identifiants
+		 */
+		$('.sliceBoxWrapperDiv').each(function( index ) {
+			//$(this) représente l'objet <div> wrapper principal
+			  var $wrapperDiv = $(this);
+		      var Page = (function() {
+		        var $navArrows = $wrapperDiv.find('.nav-arrows').hide(),
+		          $navDots = $wrapperDiv.find('.nav-dots').hide(),
+		          $nav = $navDots.children('span'),
+		          $shadow = $wrapperDiv.find('.shadow').hide(),
+		          slicebox = $wrapperDiv.find('.sb-slider').slicebox( {
+		            onReady: function() {
+		              $navArrows.show();
+		              $navDots.show();
+		              $shadow.show();
+		            },
+		            onBeforeChange: function(pos) {
+		              $nav.removeClass('nav-dot-current');
+		              $nav.eq(pos).addClass('nav-dot-current');
+		            }
+		          } ),
+		          init = function() {
+		            initEvents();
+		          },
+		          initEvents = function() {
+		            $navArrows.children(':first').on('click', function() {
+		              slicebox.next();
+		              return false;
+		            } );
+		            $navArrows.children(':last').on('click', function() {
+		              slicebox.previous();
+		              return false;
+		            } );
+		            $nav.each( function(i) {
+		              $(this).on('click', function(event) {
+		                var $dot = $(this);
+		                if(!slicebox.isActive()) {
+		                  $nav.removeClass('nav-dot-current');
+		                  $dot.addClass('nav-dot-current');
+		                }
+		                slicebox.jump(i+1);
+		                return false;
+		              });
+		            });
+		          };
+		          return { init : init };
+		      })();
+		      Page.init();
 		});
-		
-		$('.carousel').carousel({interval:2000});
-		
-		var instanceCarousel = $('.carousel_lien_for_lightbox').imageLightbox(
-		{
-			onStart:		function() { overlayOn(); closeButtonOn( instanceCarousel ); },
-			onEnd:			function() { overlayOff(); captionOff(); closeButtonOff(); activityIndicatorOff(); },
-			onLoadStart: 	function() { captionOff(); activityIndicatorOn(); },
-			onLoadEnd:	 	function() { captionOn(); activityIndicatorOff(); }
-		});
-
 	})(jQuery);
