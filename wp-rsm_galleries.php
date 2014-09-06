@@ -274,57 +274,6 @@ if (! class_exists ( 'wprsm_gals', false )) {
 		public function rsmg_base_url(){
 			return $this->base_url;
 		}
-		function slicebox_script_add($myGalleryId) {
-		?>
-		 	<script type="text/javascript">
-		 	$(function() {
-		 		var Page = (function() {
-		        var $navArrows = $('#nav-arrows'<?php $myGalleryId ?>).hide(),
-		          $navDots = $('#nav-dots'<?php $myGalleryId ?>).hide(),
-		          $nav = $navDots.children('span'),
-		          $shadow = $('#shadow'<?php $myGalleryId ?>).hide(),
-		          slicebox = $('#sb-slider'<?php $myGalleryId ?>).slicebox( {
-		            onReady: function() {
-		              $navArrows.show();
-		              $navDots.show();
-		              $shadow.show();
-		            },
-		            onBeforeChange: function(pos) {
-		              $nav.removeClass('nav-dot-current');
-		              $nav.eq(pos).addClass('nav-dot-current');
-		            }
-		          } ),
-		          init = function() {
-		            initEvents();
-		          },
-		          initEvents = function() {
-		            $navArrows.children(':first').on('click', function() {
-		              slicebox.next();
-		              return false;
-		            } );
-		            $navArrows.children(':last').on('click', function() {
-		              slicebox.previous();
-		              return false;
-		            } );
-		            $nav.each( function(i) {
-		              $(this).on('click', function(event) {
-		                var $dot = $(this);
-		                if(!slicebox.isActive()) {
-		                  $nav.removeClass('nav-dot-current');
-		                  $dot.addClass('nav-dot-current');
-		                }
-		                slicebox.jump(i+1);
-		                return false;
-		              });
-		            });
-		          };
-		          return { init : init };
-		      })();
-		      Page.init();
-		 	});
-		 	</script>
-		 	<?php
-		 }
 		// run only on posts, pages, attachments(?) and galleries, no reason to run on the front page, yet...?
 		function rsmg_mod_content() {
 			if (is_singular ()) {
