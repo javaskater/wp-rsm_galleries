@@ -57,14 +57,15 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			*/
 			wp_enqueue_style ( 'sliceBox', plugin_dir_url ( __FILE__ ) . 'css/slicebox.css', false, 'r3' );
 			wp_enqueue_style ( 'custom', plugin_dir_url ( __FILE__ ) . 'css/custom_slicebox.css', false, 'r3' );
+			wp_enqueue_style ( 'demo', plugin_dir_url ( __FILE__ ) . 'css/demo_slicebox.css', false, 'r3' );
 			/*
 			 * see http://codex.wordpress.org/Function_Reference/wp_add_inline_style and
 			 */
-			$inline_sliceBox_css = "
+			/*$inline_sliceBox_css = "
 			* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; };
       		.wrapper { position: relative; max-width: 840px; width: 100%; padding: 0 50px; margin: 0 auto; }
 			}";
-			wp_add_inline_style( 'inline-sliceBox-style', $inline_sliceBox_css );
+			wp_add_inline_style( 'inline-sliceBox-style', $inline_sliceBox_css );*/
 			wp_enqueue_script ( 'modernizer', plugin_dir_url ( __FILE__ ) . 'js/modernizr.custom.46884.js', array (
 					'jquery'
 			), '0.1', true );
@@ -107,7 +108,10 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			return $content;
 		}
 		
-		// Create a slideshow based on existing galleries of the post if use of the SDS shortcode
+		/*
+		 * Create a slideshow based on existing galleries of the post if use of the SDS shortcode
+		 * ToDo: an admin switch to decide wiche kind orf responsive gallery to Use
+		 */
 		function rsmg_mod_slideshow($atts) {
 			// uses global variable https://codex.wordpress.org/Class_Reference/wpdb
 			global $post;
@@ -212,7 +216,10 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			return "<h2>Mon SlideShow ici:" . $atts ['ids'] . "</h2>";
 		}
 		
-		// Create a slideshow based on existing galleries of the post if use of the Joo Shortcode from the Joo Galleries
+		/*
+		* Create a slideshow based on existing galleries of the post if use of the Joo Shortcode from the Joo Galleries
+		* ToDo: an admin switch to decide wiche kind orf responsive gallery to Use
+		* */
 		function rsmg_mod_JooGallery($atts) {
 			$type = $this->type_lightbox; // the type of imagelightbox, f: combined
 			extract ( shortcode_atts ( array (
