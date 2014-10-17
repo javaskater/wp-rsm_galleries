@@ -79,11 +79,20 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			 */
 			wp_enqueue_style ( 'imagelightbox', plugin_dir_url ( __FILE__ ) . 'css/imagelightbox.css', false, 'r3' );
 			
+			/*
+			 * Pour les tests de Gridify !!!
+			 * https://github.com/hongkhanh/gridify
+			 */
+			wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/gridify.js', array ('jquery'), '0.1', true );
+			wp_enqueue_style ( 'gridify', plugin_dir_url ( __FILE__ ) . 'css/demo_gridify.css', false, 'r3' );
+			
 			wp_enqueue_script ( 'gallery_lightbox', plugin_dir_url ( __FILE__ ) . 'js/gallery.js', array (
 			'imagelightbox',
 			//'elastiside',
-			'slicebox'
+			'slicebox',
+			'gridify'
 					), '0.1', true );
+			
 		}
 		function rsmg_mod_tags($content) {
 			/*
@@ -278,6 +287,46 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			}
 		}
 		
+		/*
+		 * Create a slideshow based on existing galleries of the post if use of the Joo Shortcode from the Joo Galleries
+		* Test of the Grify Plugin!!!!
+		* */
+		function rsmg_mod_JooGridifyGallery($atts) {
+			$type = $this->type_lightbox; // the type of imagelightbox, f: combined
+			extract ( shortcode_atts ( array (
+			'path' => ''
+					), $atts ) );
+					$request = null;
+					$the_ids = null;
+					if ($atts['path'] == null) {
+						return "<p>Attribut path oublié!!!</p>";
+					} else {
+						$identifiant_grid = "Joo".basename($atts['path']);
+						$images_path = ABSPATH."wp-content/uploads/images/".$atts['path'];
+						$images_url = $this->base_url."/wp-content/uploads/images/".$atts['path'];
+						$labels_path = $images_path."/labels.txt";
+						if($lp = fopen($labels_path,'r')){
+							$main_slideshow = '<div class="wrapperGrid"><div class="grid" id="'.$identifiant_grid.'">';
+							while (($label = fgets($lp)) !== false){
+								$label_array = explode("|",$label);
+								if(sizeof($label_array) >= 3){
+									$image_url = $images_url."/".$label_array[0];
+									$description = $label_array[1];
+									$author = $label_array[2];
+									$title_alt = $description."|".$author;
+									$image_element = '<img src="'.$image_url.'" alt="'.$title_alt.'" title="'.$title_alt.'" />';
+									$main_slideshow .= $image_element;
+								}
+							}
+							$main_slideshow .= '</div></div>';
+		
+							return $main_slideshow;
+						}else{
+							return "<p>Galerie fichier de lables:".$labels_path." non trouvé</p>";
+						}
+					}
+		}
+		
 		public function rsmg_base_url(){
 			return $this->base_url;
 		}
@@ -299,6 +348,9 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				
 				// add a shorcode to transform a rsm -> Joomla gallery in a Bootstrap Carousel ...
 				add_shortcode ( 'JooGallery', array($this,'rsmg_mod_JooGallery') );
+				
+				// add a shorcode to transform a rsm -> Joomla gallery in a Bootstrap Carousel ...
+				add_shortcode ( 'JooGridGallery', array($this,'rsmg_mod_JooGridifyGallery') );
 			}
 		}
 	}

@@ -1,0 +1,33 @@
+.wrapperGrid {
+	float:center;
+	display:block;
+	max-width: 100%;
+	width: 90%;
+	max-height: 100%;
+	height:90%;
+	padding: 0 50px;
+	margin: 0 auto;
+	overflow: auto;
+}
+.grid{
+	overflow: auto;
+	height:20em;
+}
+
+.wrapperGrid:after {
+    clear: both;
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+.wrapperGrid:before {
+    clear: both;
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    visibility: hidden;
+}
