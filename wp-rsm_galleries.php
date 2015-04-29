@@ -282,7 +282,29 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				 	
 				 	return $main_slideshow;
 				}else{
-					return "<p>Galerie fichier de lables:".$labels_path." non trouvé</p>";
+					//return "<p>Galerie fichier de lables:".$labels_path." non trouvé</p>";
+					if ($handle = opendir($images_path)){
+						$main_slideshow = '<div class="wrapper sliceBoxWrapperDiv">';
+						$main_slideshow .= '<ul class="sb-slider">';
+						while (false !== ($entry = readdir($handle))) {
+								$image_url = $images_url."/".basename($entry);
+								$description = 'xxxxxxxxxxxx';
+								$author = 'yyyyyyyyy';
+								$title_alt = $description."|".$author;
+								$identifiant_slicebox = basename($atts['path']);
+								$image_element = '<li><a href="#"><img src="'.$image_url.'" alt="'.$title_alt.'" title="'.$title_alt.'" /></a>';
+								$image_element .= '<div class="sb-description"><h3>'.$description.'</h3><h4>'.$author.'</h4></div>';
+								$image_element .= '</li>';
+								$main_slideshow .= $image_element;
+						}
+						$main_slideshow .= '</ul>';
+						$main_slideshow .= '<div class="shadow"></div><div id="nav-arrows'.$identifiant_slicebox.'" class="nav-arrows"><a href="#">Next</a><a href="#">Previous</a></div>';
+						$main_slideshow .= '<div class="nav-dots"><span class="nav-dot-current"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>';
+						$main_slideshow .= '</div>'; //.wrapper
+						return $main_slideshow;
+					}else{
+						return "<p>Galerie fichier de lables:".$labels_path." non trouvé et ".$images_path." n'est pas un répertoire valide!</p>";
+					}
 				}
 			}
 		}
