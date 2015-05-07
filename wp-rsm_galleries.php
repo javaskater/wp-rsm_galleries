@@ -28,7 +28,7 @@ if (! class_exists ( 'wprsm_gals', false )) {
 		function rsmg_enqueue() {
 			/*
 			 * Pour la partie Image LightBox ....
-			 */
+			*/ 
 			wp_enqueue_style ( 'imagelightbox', plugin_dir_url ( __FILE__ ) . 'css/imagelightbox.css', false, 'r3' );
 			// wp_enqueue_script('imagelightbox', plugin_dir_url(__FILE__).'imagelightbox.min.js', array('jquery'), 'r3', true);
 			wp_enqueue_script ( 'imagelightbox', plugin_dir_url ( __FILE__ ) . 'js/imagelightbox.js', array (
@@ -54,10 +54,11 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			*/
 			/*
 			 * Pour la partie SliceBox Plugin https://github.com/codrops/Slicebox
-			*/
+			
 			wp_enqueue_style ( 'sliceBox', plugin_dir_url ( __FILE__ ) . 'css/slicebox.css', false, 'r3' );
 			wp_enqueue_style ( 'custom', plugin_dir_url ( __FILE__ ) . 'css/custom_slicebox.css', false, 'r3' );
 			wp_enqueue_style ( 'demo', plugin_dir_url ( __FILE__ ) . 'css/demo_slicebox.css', false, 'r3' );
+			*/
 			/*
 			 * see http://codex.wordpress.org/Function_Reference/wp_add_inline_style and
 			 */
@@ -65,7 +66,7 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; };
       		.wrapper { position: relative; max-width: 840px; width: 100%; padding: 0 50px; margin: 0 auto; }
 			}";
-			wp_add_inline_style( 'inline-sliceBox-style', $inline_sliceBox_css );*/
+			wp_add_inline_style( 'inline-sliceBox-style', $inline_sliceBox_css );
 			wp_enqueue_script ( 'modernizer', plugin_dir_url ( __FILE__ ) . 'js/modernizr.custom.46884.js', array (
 					'jquery'
 			), '0.1', true );
@@ -73,26 +74,41 @@ if (! class_exists ( 'wprsm_gals', false )) {
 					'modernizer',
 					'jquery'
 			), '1.0', true );
-			
+			*/
 			/*
 			 * LE script qui gère la page à partir de image LightBox et Elastiside ...
-			 */
+			 
 			wp_enqueue_style ( 'imagelightbox', plugin_dir_url ( __FILE__ ) . 'css/imagelightbox.css', false, 'r3' );
-			
+			*/
 			/*
 			 * Pour les tests de Gridify !!!
 			 * https://github.com/hongkhanh/gridify
-			 */
+			
 			wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/gridify.js', array ('jquery'), '0.1', true );
 			wp_enqueue_style ( 'gridify', plugin_dir_url ( __FILE__ ) . 'css/demo_gridify.css', false, 'r3' );
 			
 			wp_enqueue_script ( 'gallery_lightbox', plugin_dir_url ( __FILE__ ) . 'js/gallery.js', array (
 			'imagelightbox',
-			//'elastiside',
+			'elastiside',
 			'slicebox',
 			'gridify'
 					), '0.1', true );
+			*/
+			/*
+			 * Pour la partie PhotoSWipe https://github.com/dimsemenov/photoswipe
+			 */
+			wp_enqueue_style ( 'photoswipe', plugin_dir_url ( __FILE__ ) . 'css/photoswipe.css', false, 'r4' );
+			wp_enqueue_style ( 'style_photoswipe', plugin_dir_url ( __FILE__ ) . 'css/default-skin/default-skin.css', array('photoswipe'), 'r4' );
+			wp_enqueue_script ( 'photoswipe', plugin_dir_url ( __FILE__ ) . 'js/photoswipe.js', array (
+					'jquery'
+			), '4.0', true );
+			wp_enqueue_script ( 'photoswipe_ui', plugin_dir_url ( __FILE__ ) . 'js/photoswipe-ui-default.js', array (
+					'photoswipe'
+			), '4.0', true );
 			
+			wp_enqueue_script ( 'my_gallery', plugin_dir_url ( __FILE__ ) . 'js/gallery2.js', array (
+					'photoswipe_ui','imagelightbox'
+			), '4.0', true );
 		}
 		function rsmg_mod_tags($content) {
 			/*
@@ -308,7 +324,88 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				}
 			}
 		}
-		
+
+		function modJooGalleryInPhotoSwipe($atts){
+			extract ( shortcode_atts ( array (
+					'path' => ''
+			), $atts ) );
+			$request = null;
+			$the_ids = null;
+			if ($atts['path'] == null) {
+				return "<p>Attribut path oublié!!!</p>";
+			} else {
+				$images_path = ABSPATH."wp-content/uploads/images/".$atts['path'];
+				$images_url = $this->base_url."/wp-content/uploads/images/".$atts['path'];
+				$labels_path = $images_path."/labels.txt";
+				if(file_exists($labels_path) && $lp = fopen($labels_path,'r')){
+					$main_slideshow = '<div class="wrapper sliceBoxWrapperDiv">';
+					$main_slideshow .= '<ul class="sb-slider">';
+					while (($label = fgets($lp)) !== false){
+						$label_array = explode("|",$label);
+						if(sizeof($label_array) >= 3){
+							$image_url = $images_url."/".$label_array[0];
+							$description = $label_array[1];
+							$author = $label_array[2];
+							$title_alt = $description."|".$author;
+							$identifiant_slicebox = basename($atts['path']);
+							$image_element = '<li><a href="#"><img src="'.$image_url.'" alt="'.$title_alt.'" title="'.$title_alt.'" /></a>';
+							$image_element .= '<div class="sb-description"><h3>'.$description.'</h3><h4>'.$author.'</h4></div>';
+							$image_element .= '</li>';
+							$main_slideshow .= $image_element;
+						}
+					}
+					$main_slideshow .= '</ul>';
+					$main_slideshow .= '<div class="shadow"></div><div id="nav-arrows'.$identifiant_slicebox.'" class="nav-arrows"><a href="#">Next</a><a href="#">Previous</a></div>';
+					$main_slideshow .= '<div class="nav-dots"><span class="nav-dot-current"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>';
+					$main_slideshow .= '</div>'; //.wrapper
+			
+					return $main_slideshow;
+				}else{
+					//return "<p>Galerie fichier de lables:".$labels_path." non trouvé</p>";
+					if ($handle = opendir($images_path)){
+						$main_slideshow = '<div class="wrapper sliceBoxWrapperDiv">';
+						$main_slideshow .= '<ul class="sb-slider">';
+						while (false !== ($entry = readdir($handle))) {
+							$image_url = $images_url."/".basename($entry);
+							$description = 'xxxxxxxxxxxx';
+							$author = 'yyyyyyyyy';
+							$title_alt = $description."|".$author;
+							$identifiant_slicebox = basename($atts['path']);
+							$image_element = '<li><a href="#"><img src="'.$image_url.'" alt="'.$title_alt.'" title="'.$title_alt.'" /></a>';
+							$image_element .= '<div class="sb-description"><h3>'.$description.'</h3><h4>'.$author.'</h4></div>';
+							$image_element .= '</li>';
+							$main_slideshow .= $image_element;
+						}
+						$main_slideshow .= '</ul>';
+						$main_slideshow .= '<div class="shadow"></div><div id="nav-arrows'.$identifiant_slicebox.'" class="nav-arrows"><a href="#">Next</a><a href="#">Previous</a></div>';
+						$main_slideshow .= '<div class="nav-dots"><span class="nav-dot-current"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>';
+						$main_slideshow .= '</div>'; //.wrapper
+						return $main_slideshow;
+					}else{
+						return "<p>Galerie fichier de lables:".$labels_path." non trouvé et ".$images_path." n'est pas un répertoire valide!</p>";
+					}
+				}
+			}
+			<!-- Root element of PhotoSwipe. Must have class pswp. -->
+			<div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+
+    <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+        <a href="large-image.jpg" itemprop="contentUrl" data-size="600x400">
+            <img src="small-image.jpg" itemprop="thumbnail" alt="Image description" />
+        </a>
+        <figcaption itemprop="caption description">Image caption</figcaption>
+    </figure>
+
+    <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+        <a href="large-image.jpg" itemprop="contentUrl" data-size="600x400">
+            <img src="small-image.jpg" itemprop="thumbnail" alt="Image description" />
+        </a>
+        <figcaption itemprop="caption description">Image caption</figcaption>
+    </figure>
+
+
+</div>
+		}
 		/*
 		 * Create a slideshow based on existing galleries of the post if use of the Joo Shortcode from the Joo Galleries
 		* Test of the Grify Plugin!!!!
