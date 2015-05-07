@@ -116,6 +116,21 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			
 			return $content;
 		}
+		/*
+		 * Private funcction to get the complemntary infos (image realpath, images sizes image author) for the image plugin
+		 */
+		private function get_complemtary_image_infos($post){
+			$infos = array('author'=>null, 'image_datas'=>null);
+			//https://codex.wordpress.org/Function_Reference/get_user_by
+			if($user = get_user_by( 'id', $post->post_author )){
+				$infos['author'] = 	$user;	
+			}
+			//https://codex.wordpress.org/Function_Reference/get_post_meta
+			if($metas_image_serialized = get_post_meta( $post->ID, '_wp_attachment_metadata', true )){
+				$infos['image_datas'] = maybe_unserialize($metas_image_serialized);
+			}
+			return $infos;
+		}
 		
 		/*
 		 * Create a slideshow based on existing galleries of the post if use of the SDS shortcode
@@ -138,8 +153,8 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				$request = $wpdb->prepare ( "SELECT $wpdb->posts.* FROM $wpdb->posts  where post_type = %s and ID IN (" . implode ( ',', $the_ids ) . ")", 'attachment' );
 			}
 			if ($request != null) {
-				/*$image_posts = $wpdb->get_results ( $request );
-				$main_carousel = '<div id="carousel_post_x" class="carousel slide" data-ride="carousel">'; // Ajouter un indice éventuellement si plusieurs Carousels
+				$image_posts = $wpdb->get_results ( $request );
+				/*$main_carousel = '<div id="carousel_post_x" class="carousel slide" data-ride="carousel">'; // Ajouter un indice éventuellement si plusieurs Carousels
 				$carousel_indicators = '<ol class="carousel-indicators">';
 				$carousel_inner = '<div class="carousel-inner">';
 				$indice = 0;
@@ -187,30 +202,42 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				$main_slideshow .= '<ul class="sb-slider">';
 				if ($the_ids == null) {
 					foreach ( $image_posts as $image_post ) {
-						$image_url = $image_post->guid;
-						$description = 'A compléter';
-						$author = 'A compléter';
-						$title_alt = $description."|".$author;
-						$identifiant_slicebox = basename($atts['path']);
-						$image_element = '<li><a href="#"><img src="'.$image_url.'" alt="'.$title_alt.'" title="'.$title_alt.'" /></a>';
-						$image_element .= '<div class="sb-description"><h3>'.$description.'</h3><h4>'.$author.'</h4></div>';
-						$image_element .= '</li>';
-						$main_slideshow .= $image_element;
+						$real_image_informations = $this->get_complemtary_image_infos($image_post);
+						if($real_image_informations['image_datas']){
+							$image_url = $this->site_url.'/wp-content/uploads/'.$real_image_informations['image_datas']['file'];
+							$description = $image_post->post_title;
+							$author = 'Xxxxxxx';
+							if($real_image_informations['author']){
+								$author = $real_image_informations['author']->display_name;
+							}
+							$title_alt = $description."|".$author;
+							$identifiant_slicebox = basename($atts['path']);
+							$image_element = '<li><a href="#"><img src="'.$image_url.'" alt="'.$title_alt.'" title="'.$title_alt.'" /></a>';
+							$image_element .= '<div class="sb-description"><h3>'.$description.'</h3><h4>'.$author.'</h4></div>';
+							$image_element .= '</li>';
+							$main_slideshow .= $image_element;
+						}
 					}
 				} else {
 					// We have to show the image in the order foreseen
 					foreach ( $the_ids as $id ) {
 						foreach ( $image_posts as $image_post ) {
 							if ($image_post->ID == $id) {
-								$image_url = $image_post->guid;
-								$description = 'A compléter';
-								$author = 'A compléter';
-								$title_alt = $description."|".$author;
-								$identifiant_slicebox = basename($atts['path']);
-								$image_element = '<li><a href="#"><img src="'.$image_url.'" alt="'.$title_alt.'" title="'.$title_alt.'" /></a>';
-								$image_element .= '<div class="sb-description"><h3>'.$description.'</h3><h4>'.$author.'</h4></div>';
-								$image_element .= '</li>';
+								$real_image_informations = $this->get_complemtary_image_infos($image_post);
+								if($real_image_informations['image_datas']){
+									$image_url = $this->site_url.'/wp-content/uploads/'.$real_image_informations['image_datas']['file'];
+									$description = $image_post->post_title;
+									$author = 'Xxxxxxx';
+									if($real_image_informations['author']){
+										$author = $real_image_informations['author']->display_name;
+									}
+									$title_alt = $description."|".$author;
+									$identifiant_slicebox = basename($atts['path']);
+									$image_element = '<li><a href="#"><img src="'.$image_url.'" alt="'.$title_alt.'" title="'.$title_alt.'" /></a>';
+									$image_element .= '<div class="sb-description"><h3>'.$description.'</h3><h4>'.$author.'</h4></div>';
+									$image_element .= '</li>';
 								$main_slideshow .= $image_element;
+								}
 							}
 						}
 					}
@@ -367,6 +394,9 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				
 				// add a shorcode to transform a gallery in a Bootstrap Carousel ...
 				add_shortcode ( 'SDS', array($this,'rsmg_mod_slideshow'));
+				
+				// make also the default Gallery gallery in a Bootstrap Carousel ...
+				add_shortcode ( 'gallery', array($this,'rsmg_mod_slideshow'));
 				
 				// add a shorcode to transform a rsm -> Joomla gallery in a Bootstrap Carousel ...
 				add_shortcode ( 'JooGallery', array($this,'rsmg_mod_JooGallery') );
