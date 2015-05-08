@@ -256,6 +256,9 @@ if (! class_exists ( 'wprsm_gals', false )) {
 		* Create a slideshow based on existing galleries of the post if use of the Joo Shortcode from the Joo Galleries
 		* ToDo: an admin switch to decide wiche kind orf responsive gallery to Use
 		* */
+		function isimage($mediapath) { //http://stackoverflow.com/questions/15408125/php-check-if-file-is-an-image
+			return getimagesize($mediapath) ? true : false;
+		}
 		function rsmg_mod_JooGallery($atts) {
 			$type = $this->type_lightbox; // the type of imagelightbox, f: combined
 			extract ( shortcode_atts ( array (
@@ -269,7 +272,7 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				$images_path = ABSPATH."wp-content/uploads/images/".$atts['path'];
 				$images_url = $this->base_url."/wp-content/uploads/images/".$atts['path'];
 				$labels_path = $images_path."/labels.txt";
-				 if($lp = fopen($labels_path,'r')){
+				 if(file_exists($labels_path) && is_readable ($labels_path) && $lp = fopen($labels_path,'r')){
 				 	/*
 				 	 * Cas où j'utilise Elastislide https://github.com/codrops/Elastislide
 					$main_slideshow = '<ul class="elastislide-list">';
@@ -290,7 +293,7 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				 	$main_slideshow .= '<ul class="sb-slider">';
 				 	while (($label = fgets($lp)) !== false){
 				 		$label_array = explode("|",$label);
-				 		if(sizeof($label_array) >= 3){
+				 		if(sizeof($label_array) >= 3 && $this->isimage($images_path.'/'.$label_array[0])){
 				 			$image_url = $images_url."/".$label_array[0];
 				 			$description = $label_array[1];
 				 			$author = $label_array[2];
@@ -310,10 +313,11 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				 	return $main_slideshow;
 				}else{
 					//return "<p>Galerie fichier de lables:".$labels_path." non trouvé</p>";
-					if ($handle = opendir($images_path)){
+					if (file_exists($images_path) && is_dir($images_path) && $handle = opendir($images_path)){
 						$main_slideshow = '<div class="wrapper sliceBoxWrapperDiv">';
 						$main_slideshow .= '<ul class="sb-slider">';
 						while (false !== ($entry = readdir($handle))) {
+							if(basename($entry) != '.' && basename($entry) != '..' && $this->isimage($images_path.'/'.$entry)){
 								$image_url = $images_url."/".basename($entry);
 								$description = 'xxxxxxxxxxxx';
 								$author = 'yyyyyyyyy';
@@ -323,6 +327,7 @@ if (! class_exists ( 'wprsm_gals', false )) {
 								$image_element .= '<div class="sb-description"><h3>'.$description.'</h3><h4>'.$author.'</h4></div>';
 								$image_element .= '</li>';
 								$main_slideshow .= $image_element;
+							}
 						}
 						$main_slideshow .= '</ul>';
 						$main_slideshow .= '<div class="shadow"></div><div id="nav-arrows'.$identifiant_slicebox.'" class="nav-arrows"><a href="#">Next</a><a href="#">Previous</a></div>';
