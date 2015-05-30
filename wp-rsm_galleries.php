@@ -207,7 +207,10 @@ if (! class_exists ( 'wprsm_gals', false )) {
 							$image_url = $this->site_url.'/wp-content/uploads/'.$real_image_informations['image_datas']['file'];
 							$description = $image_post->post_content;
 							if (strlen($description) == 0){
-								$description = $image_post->post_title;
+								$description = $image_post->post_excerpt;
+								if (strlen($description) == 0){
+									$description = $image_post->post_title;
+								}
 							}
 							$author = 'Xxxxxxx';
 							if($real_image_informations['author']){
@@ -231,7 +234,10 @@ if (! class_exists ( 'wprsm_gals', false )) {
 									$image_url = $this->site_url.'/wp-content/uploads/'.$real_image_informations['image_datas']['file'];
 									$description = $image_post->post_content;
 									if (strlen($description) == 0){
-										$description = $image_post->post_title;
+										$description = $image_post->post_excerpt;
+										if (strlen($description) == 0){
+											$description = $image_post->post_title;
+										}
 									}
 									$author = 'Xxxxxxx';
 									if($real_image_informations['author']){
