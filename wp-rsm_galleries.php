@@ -9,6 +9,7 @@
  * License: MIT
  */
 require_once 'gallery_links.php';
+require_once 'JQueryLightGallery.php';
 
 // Exit if accessed directly
 if (! defined ( 'ABSPATH' ))
@@ -426,8 +427,9 @@ if (! class_exists ( 'wprsm_gals', false )) {
 }
 
 $my_plugin = new wprsm_gals("f");
+$my_jqlightbox = new jqlg("f");
 
-add_filter ( "template_redirect", array($my_plugin,"rsmg_mod_content"), 10, 1 );
+add_filter ( "template_redirect", array($my_jqlightbox,"rsmg_mod_content"), 10, 1 );
 add_shortcode("url", array($my_plugin,"rsmg_base_url"));
 
 ?>
