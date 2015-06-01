@@ -414,7 +414,12 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				add_shortcode ( 'SDS', array($this,'rsmg_mod_slideshow'));
 				
 				// make also the default Gallery gallery in a Bootstrap Carousel ...
-				add_shortcode ( 'gallery', array($this,'rsmg_mod_slideshow'));
+				///add_shortcode ( 'gallery', array($this,'rsmg_mod_slideshow'));
+				$my_jqlightbox = new jqlg("f");
+				add_shortcode("gallery", array($my_jqlightbox,'rsmg_mod_jquerylightbox'));
+				
+				add_action ( 'wp_enqueue_scripts', array($my_jqlightbox,'rsmg_enqueue'));
+				add_shortcode("jqlg", array($my_jqlightbox,'rsmg_mod_jquerylightbox'));
 				
 				// add a shorcode to transform a rsm -> Joomla gallery in a Bootstrap Carousel ...
 				add_shortcode ( 'JooGallery', array($this,'rsmg_mod_JooGallery') );
@@ -427,9 +432,9 @@ if (! class_exists ( 'wprsm_gals', false )) {
 }
 
 $my_plugin = new wprsm_gals("f");
-$my_jqlightbox = new jqlg("f");
+add_filter ( "template_redirect", array($my_plugin,"rsmg_mod_content"), 10, 1 );
 
-add_filter ( "template_redirect", array($my_jqlightbox,"rsmg_mod_content"), 10, 1 );
+//add_filter ( "template_redirect", array($my_jqlightbox,"rsmg_mod_content"), 10, 1 );
 add_shortcode("url", array($my_plugin,"rsmg_base_url"));
 
 ?>
