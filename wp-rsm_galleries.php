@@ -76,11 +76,6 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			), '1.0', true );
 			
 			/*
-			 * LE script qui gère la page à partir de image LightBox et Elastiside ...
-			 */
-			wp_enqueue_style ( 'imagelightbox', plugin_dir_url ( __FILE__ ) . 'css/imagelightbox.css', false, 'r3' );
-			
-			/*
 			 * Pour les tests de Gridify !!!
 			 * https://github.com/hongkhanh/gridify
 			 */
@@ -400,9 +395,10 @@ if (! class_exists ( 'wprsm_gals', false )) {
 		// run only on posts, pages, attachments(?) and galleries, no reason to run on the front page, yet...?
 		function rsmg_mod_content() {
 			if (is_singular ()) {
-				
+				$my_jqlightbox = new jqlg("f");
 				// registering styles and scripts
-				add_action ( 'wp_enqueue_scripts', array($this,'rsmg_enqueue'));
+				//add_action ( 'wp_enqueue_scripts', array($this,'rsmg_enqueue'));
+				add_action ( 'wp_enqueue_scripts', array($my_jqlightbox,'rsmg_enqueue'));
 				
 				// adds the filter for single content images
 				add_filter ( 'the_content', array($this,'rsmg_mod_tags'));
@@ -415,10 +411,10 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				
 				// make also the default Gallery gallery in a Bootstrap Carousel ...
 				///add_shortcode ( 'gallery', array($this,'rsmg_mod_slideshow'));
-				$my_jqlightbox = new jqlg("f");
-				add_shortcode("gallery", array($my_jqlightbox,'rsmg_mod_jquerylightbox'));
 				
-				add_action ( 'wp_enqueue_scripts', array($my_jqlightbox,'rsmg_enqueue'));
+				// registering styles and scripts
+				
+				add_shortcode("gallery", array($my_jqlightbox,'rsmg_mod_jquerylightbox'));
 				add_shortcode("jqlg", array($my_jqlightbox,'rsmg_mod_jquerylightbox'));
 				
 				// add a shorcode to transform a rsm -> Joomla gallery in a Bootstrap Carousel ...
@@ -434,7 +430,6 @@ if (! class_exists ( 'wprsm_gals', false )) {
 $my_plugin = new wprsm_gals("f");
 add_filter ( "template_redirect", array($my_plugin,"rsmg_mod_content"), 10, 1 );
 
-//add_filter ( "template_redirect", array($my_jqlightbox,"rsmg_mod_content"), 10, 1 );
 add_shortcode("url", array($my_plugin,"rsmg_base_url"));
 
 ?>

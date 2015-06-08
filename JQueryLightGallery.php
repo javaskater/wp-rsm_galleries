@@ -24,10 +24,10 @@ if ( !class_exists('jqlg', false) ) {
 			 * https://github.com/sachinchoolur/lightGallery
 			 */
 			wp_enqueue_style ( 'jqlg', plugin_dir_url ( __FILE__ ) . 'css/lightGallery.css', false, 'r3' );
-			wp_enqueue_style ( 'jqlg', plugin_dir_url ( __FILE__ ) . 'css/customjplg.css', false, 'r3' );
+			wp_enqueue_style ( 'jqlgcustoms', plugin_dir_url ( __FILE__ ) . 'css/customjplg.css', false, 'r3' );
 			wp_enqueue_script ( 'jqlightbox', plugin_dir_url ( __FILE__ ) . 'js/lightGallery.js', array ('jquery'
 			), '1.0', true );
-			wp_enqueue_script ( 'myjqlb', plugin_dir_url ( __FILE__ ) . 'js/galleryjqlg.js', array ('jqlightbox'
+			wp_enqueue_script ( 'myjqlightbox', plugin_dir_url ( __FILE__ ) . 'js/galleryjqlg.js', array ('jqlightbox'
 			), '0.1', true );
 			
 		}
@@ -101,7 +101,7 @@ if ( !class_exists('jqlg', false) ) {
 			}
 			if ($request != null) {
 				$image_posts = $wpdb->get_results ( $request );
-				$main_jqueryullist = '<ul class="light-gallery-serie gallery list-unstyled home">';
+				$main_jqueryullist = '<ul class="light-gallery-serie gallery list-unstyled">';
 				$main_jqueryhtmlegend = '';
 				$index = 0;
 				if ($the_ids == null) {
@@ -135,7 +135,7 @@ if ( !class_exists('jqlg', false) ) {
 					}
 				}
 				$main_jqueryullist .= '</ul>';
-				return "<div>".$main_jqueryullist.$main_jqueryhtmlegend."</div>";
+				return "<div class='jqlg-container'>".$main_jqueryullist.$main_jqueryhtmlegend."</div>";
 		
 			}
 			return "<h2>Ma JQueryLightBox ici:" . $atts ['ids'] . "</h2>";
