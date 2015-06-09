@@ -397,7 +397,7 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			if (is_singular ()) {
 				$my_jqlightbox = new jqlg("f");
 				// registering styles and scripts
-				//add_action ( 'wp_enqueue_scripts', array($this,'rsmg_enqueue'));
+				add_action ( 'wp_enqueue_scripts', array($this,'rsmg_enqueue'));
 				add_action ( 'wp_enqueue_scripts', array($my_jqlightbox,'rsmg_enqueue'));
 				
 				// adds the filter for single content images
