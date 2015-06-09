@@ -55,10 +55,32 @@ if ( !class_exists('jqlg', false) ) {
 			$image_elements_array = array();
 			if($real_image_informations['image_datas']){
 				$original_file = $real_image_informations['image_datas']['file'];
+				$original_file_name = basename($original_file);
 				$image_local_dir = dirname($original_file);
-				$large_image_url = $this->base_url.'/wp-content/uploads/'.$image_local_dir.'/'.$real_image_informations['image_datas']['sizes']['large']['file'];
-				$medium_image_url = $this->base_url.'/wp-content/uploads/'.$image_local_dir.'/'.$real_image_informations['image_datas']['sizes']['medium']['file'];
-				$thumb_url = $this->base_url.'/wp-content/uploads/'.$image_local_dir.'/'.$real_image_informations['image_datas']['sizes']['thumbnail']['file'];
+				$large_file_name = $original_file_name;
+				if($real_image_informations['image_datas']['sizes']['slide-large-thumb']['file']){
+					$large_file_name = $real_image_informations['image_datas']['sizes']['slide-large-thumb']['file'];
+				} elseif ($real_image_informations['image_datas']['sizes']['large']['file']){
+					$large_file_name = $real_image_informations['image_datas']['sizes']['large']['file'];
+				}
+				$large_image_url = $this->base_url.'/wp-content/uploads/'.$image_local_dir.'/'.$large_file_name;
+				
+				$medium_file_name = $original_file_name;
+				if($real_image_informations['image_datas']['sizes']['slide-medium-thumb']['file']){
+					$medium_file_name = $real_image_informations['image_datas']['sizes']['slide-medium-thumb']['file'];
+				} elseif ($real_image_informations['image_datas']['sizes']['medium']['file']){
+					$medium_file_name = $real_image_informations['image_datas']['sizes']['medium']['file'];
+				}
+				$medium_image_url = $this->base_url.'/wp-content/uploads/'.$image_local_dir.'/'.$medium_file_name;
+				
+				$thumb_file_name = $original_file_name;
+				if($real_image_informations['image_datas']['sizes']['slide-small-thumb']['file']){
+					$thumb_file_name = $real_image_informations['image_datas']['sizes']['slide-small-thumb']['file'];
+				} elseif ($real_image_informations['image_datas']['sizes']['small']['file']){
+					$thumb_file_name = $real_image_informations['image_datas']['sizes']['small']['file'];
+				}
+				$thumb_url = $this->base_url.'/wp-content/uploads/'.$image_local_dir.'/'.$thumb_file_name;
+				
 				$image_jqueryhtmlegend = '<div id="html'.$index_image.'" style="display:none"><div class="custom-html">';
 				$image_post = $real_image_informations['post'];
 				if (strlen($image_post->post_title) > 0){
