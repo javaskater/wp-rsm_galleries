@@ -12,9 +12,9 @@ if ( !class_exists('jqlg', false) ) {
 		private $base_url;
 		private $type_lightbox;
 		
-		function __construct($type_lightbox){
-			$this->type_lightbox = $type_lightbox;
+		function __construct(){
 			$this->base_url = get_site_url();
+			$this->thumb_size = 150;
 		}
 		
 		function rsmg_enqueue() {
@@ -105,6 +105,7 @@ if ( !class_exists('jqlg', false) ) {
 			}
 			return $image_elements_array;
 		}
+		
 		function rsmg_mod_jquerylightbox($atts) {
 			// uses global variable https://codex.wordpress.org/Class_Reference/wpdb
 			global $post;
@@ -161,6 +162,125 @@ if ( !class_exists('jqlg', false) ) {
 		
 			}
 			return "<h2>Ma JQueryLightBox ici:" . $atts ['ids'] . "</h2>";
+		}
+		
+		/*
+		 * Create a jqlg gallery based on imported Joomla Galleries !!!!
+		 * use of the https://github.com/sachinchoolur/lightGallery for responsive animation
+		 */
+		/*
+		 * Create a slideshow based on existing galleries of the post if use of the Joo Shortcode from the Joo Galleries
+		 * ToDo: an admin switch to decide wiche kind orf responsive gallery to Use
+		 * */
+		private function isimage($mediapath) { //http://stackoverflow.com/questions/15408125/php-check-if-file-is-an-image
+			if (file_exists($mediapath)){
+				return getimagesize($mediapath) ? true : false;
+			}else{
+				return false;
+			}
+		}
+		private function jooimage_for_jquery_lightbox($image_infos,$thumb_size,$index_image){
+			$label_array = $image_infos['labels'];
+			$images_dir = $image_infos['dir'];
+			$images_base_url = $image_infos['base_url'];
+			if(sizeof($label_array) >= 3){
+				$real_image_name = $label_array[0];
+				$real_image_full_path = $images_dir."/".$real_image_name;
+				if ($this->isimage($real_image_full_path)){
+					$description = $label_array[1];
+					$author = $label_array[2];
+					$title_alt = $description."|".$author;
+					$real_image_url = $images_base_url."/".$real_image_name;
+					$image_elements_array = array();
+					//TODO si le thumb  n'existe pas redimmensionner en PHP cf. l'import de Joomla vers Wordpress !!!!
+					$large_file_name = $real_image_name;
+					$large_image_url = $real_image_url;
+					$medium_file_name = $large_file_name;
+					$medium_image_url = $large_image_url;
+					$real_image_path_parts = pathinfo($real_image_full_path);//http://php.net/manual/fr/function.pathinfo.php
+					$thumb_image_extension = strtolower($real_image_path_parts['extension']);
+					$thumb_file_name = $real_image_path_parts['filename']."-".$thumb_size."x".$thumb_size.".".$thumb_image_extension;
+					$thumb_dir = $real_image_path_parts['dirname'];
+					$thumb_full_path = $thumb_dir."/".$thumb_file_name;
+					if(!file_exists($thumb_full_path)){
+						//https://codex.wordpress.org/Class_Reference/WP_Image_Editor for resizing Image
+						$image = wp_get_image_editor( $real_image_full_path ); // Return an implementation that extends <tt>WP_Image_Editor</tt>
+						if ( ! is_wp_error( $image ) ) {
+							//$image->rotate( 90 ); only for the example
+							$image->resize( $thumb_size, true );
+							$image->save( $thumb_full_path );
+						}
+					}
+					$thumb_url = $images_base_url.'/'.$thumb_file_name;
+			
+					$image_jqueryhtmlegend = '<div id="html'.$index_image.'" style="display:none"><div class="custom-html">';
+					$image_jqueryhtmlegend .= '<h4>'.$description.'</h4>';
+					$image_jqueryhtmlegend .= '<h5>'.$author.'</h5>';
+					$image_jqueryhtmlegend .='</div></div>';
+					$image_elements_array['html_legend'] = $image_jqueryhtmlegend;
+					$image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'"><a href="#">';
+					$image_element .= '<img src="'.$thumb_url.'"></img>';
+					$image_element .= '</a></li>';
+					$image_elements_array['html_image'] = $image_element;
+					return $image_elements_array;
+				}
+			}
+			return null;
+		}
+		function rsmg_mod_JooGallery($atts) {
+			extract ( shortcode_atts ( array (
+					'path' => '',
+			), $atts ) );
+			$request = null;
+			$the_ids = null;
+			if ($atts['path'] == null) {
+				return "<p>Attribut path oublié!!!</p>";
+			} else {
+				$images_path = ABSPATH."wp-content/uploads/images/".$atts['path'];
+				$images_url = $this->base_url."/wp-content/uploads/images/".$atts['path'];
+				$images_infos = array('dir' => ABSPATH."wp-content/uploads/images/".$atts['path'],
+						'base_url' => $this->base_url."/wp-content/uploads/images/".$atts['path']
+				);
+				$labels_path = $images_path."/labels.txt";
+				/*
+				 * La fonction finale ...
+				 */
+				$main_jqueryullist = '<ul class="light-gallery-serie gallery list-unstyled">';
+				$main_jqueryhtmlegend = '';
+				$index = 0;
+				if(file_exists($labels_path) && is_readable ($labels_path) && $lp = fopen($labels_path,'r')){
+					while (($label = fgets($lp)) !== false){
+						$label_array = explode("|",$label);
+						$images_infos['labels'] = $label_array;
+						$image_gal_datas = $this->jooimage_for_jquery_lightbox($images_infos,$this->thumb_size,$index);
+						if($image_gal_datas != null){
+							$main_jqueryullist .= $image_gal_datas['html_image'];
+							$main_jqueryhtmlegend .= $image_gal_datas['html_legend'];
+						}
+					}
+					$main_jqueryullist .= '</ul>';
+					return "<div class='jqlg-container'>".$main_jqueryullist.$main_jqueryhtmlegend."</div>";
+				}else{
+					//return "<p>Galerie fichier de lables:".$labels_path." non trouvé</p>";
+					if (file_exists($images_path) && is_dir($images_path) && $handle = opendir($images_path)){
+						while (false !== ($entry = readdir($handle))) {
+							if(basename($entry) != '.' && basename($entry) != '..' && $this->isimage($images_path.'/'.$entry)){
+								$label_array = array($entry,'xxxxxxxxxxxx','yyyyyyyyy');
+								$images_infos['labels'] = $label_array;
+								$image_gal_datas = $this->jooimage_for_jquery_lightbox($images_infos,$this->thumb_size,$index);
+								if($image_gal_datas != null){
+									$main_jqueryullist .= $image_gal_datas['html_image'];
+									$main_jqueryhtmlegend .= $image_gal_datas['html_legend'];
+								}
+							}
+						}
+						return "<div class='jqlg-container'>".$main_jqueryullist.$main_jqueryhtmlegend."</div>";
+					}else{
+						return "<p>Galerie fichier de lables:".$labels_path." non trouvé et ".$images_path." n'est pas un répertoire valide!</p>";
+					}
+				}
+			}
+			
 		}
 	}
 }

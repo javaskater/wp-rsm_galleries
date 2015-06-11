@@ -418,7 +418,9 @@ if (! class_exists ( 'wprsm_gals', false )) {
 				add_shortcode("jqlg", array($my_jqlightbox,'rsmg_mod_jquerylightbox'));
 				
 				// add a shorcode to transform a rsm -> Joomla gallery in a Bootstrap Carousel ...
-				add_shortcode ( 'JooGallery', array($this,'rsmg_mod_JooGallery') );
+				//add_shortcode ( 'JooGallery', array($this,'rsmg_mod_JooGallery') );
+				// add a shorcode to transform a rsm -> Joomla gallery in a JQLG expression ...
+				add_shortcode ( 'JooGallery', array($my_jqlightbox,'rsmg_mod_JooGallery') );
 				
 				// add a shorcode to transform a rsm -> Joomla gallery in a Bootstrap Carousel ...
 				add_shortcode ( 'JooGridGallery', array($this,'rsmg_mod_JooGridifyGallery') );
