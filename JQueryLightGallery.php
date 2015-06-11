@@ -265,16 +265,18 @@ if ( !class_exists('jqlg', false) ) {
 					if (file_exists($images_path) && is_dir($images_path) && $handle = opendir($images_path)){
 						while (false !== ($entry = readdir($handle))) {
 							if(basename($entry) != '.' && basename($entry) != '..' && $this->isimage($images_path.'/'.$entry)){
-								$label_array = array($entry,'xxxxxxxxxxxx','yyyyyyyyy');
-								$images_infos['labels'] = $label_array;
-								$image_gal_datas = $this->jooimage_for_jquery_lightbox($images_infos,$this->thumb_size,$index);
-								if($image_gal_datas != null){
-									$main_jqueryullist .= $image_gal_datas['html_image'];
-									$main_jqueryhtmlegend .= $image_gal_datas['html_legend'];
+								if(!preg_match ('/\-[0-9]+x[0-9]+\.[a-z]+$/i' ,$entry)){
+									$label_array = array($entry,'','');
+									$images_infos['labels'] = $label_array;
+									$image_gal_datas = $this->jooimage_for_jquery_lightbox($images_infos,$this->thumb_size,$index);
+									if($image_gal_datas != null){
+										$main_jqueryullist .= $image_gal_datas['html_image'];
+									}
 								}
 							}
 						}
-						return "<div class='jqlg-container'>".$main_jqueryullist.$main_jqueryhtmlegend."</div>";
+						$main_jqueryullist .= '</ul>';
+						return "<div class='jqlg-container'>".$main_jqueryullist."</div>";
 					}else{
 						return "<p>Galerie fichier de lables:".$labels_path." non trouvé et ".$images_path." n'est pas un répertoire valide!</p>";
 					}
