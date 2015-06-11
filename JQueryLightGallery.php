@@ -242,6 +242,7 @@ if ( !class_exists('jqlg', false) ) {
 						'base_url' => $this->base_url."/wp-content/uploads/images/".$atts['path']
 				);
 				$labels_path = $images_path."/labels.txt";
+				$id_gallery = basename($atts['path']);
 				/*
 				 * La fonction finale ...
 				 */
@@ -252,7 +253,8 @@ if ( !class_exists('jqlg', false) ) {
 					while (($label = fgets($lp)) !== false){
 						$label_array = explode("|",$label);
 						$images_infos['labels'] = $label_array;
-						$image_gal_datas = $this->jooimage_for_jquery_lightbox($images_infos,$this->thumb_size,$index);
+						$id_image = $id_gallery."_".$index;
+						$image_gal_datas = $this->jooimage_for_jquery_lightbox($images_infos,$this->thumb_size,$id_image);
 						if($image_gal_datas != null){
 							$main_jqueryullist .= $image_gal_datas['html_image'];
 							$main_jqueryhtmlegend .= $image_gal_datas['html_legend'];
