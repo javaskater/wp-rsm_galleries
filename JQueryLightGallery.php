@@ -256,6 +256,7 @@ if ( !class_exists('jqlg', false) ) {
 						if($image_gal_datas != null){
 							$main_jqueryullist .= $image_gal_datas['html_image'];
 							$main_jqueryhtmlegend .= $image_gal_datas['html_legend'];
+							$index++;
 						}
 					}
 					$main_jqueryullist .= '</ul>';
@@ -271,6 +272,7 @@ if ( !class_exists('jqlg', false) ) {
 									$image_gal_datas = $this->jooimage_for_jquery_lightbox($images_infos,$this->thumb_size,$index);
 									if($image_gal_datas != null){
 										$main_jqueryullist .= $image_gal_datas['html_image'];
+										$index++;
 									}
 								}
 							}
