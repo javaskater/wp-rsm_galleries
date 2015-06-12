@@ -1,8 +1,10 @@
 @CHARSET "UTF-8";
-ul{
+
+ul {
 	list-style: none outside none;
-    padding-left: 0;
+	padding-left: 0;
 }
+
 .gallery li {
 	display: block;
 	float: left;
@@ -11,15 +13,17 @@ ul{
 	margin-right: 6px;
 	width: 100px;
 }
+
 .gallery li a {
 	height: 100px;
 	width: 100px;
 }
+
 .gallery li a img {
 	max-width: 100px;
 }
 
-.jqlg-container{
+.jqlg-container {
 	position: relative;
 	display: block;
 	max-width: 100%;
@@ -27,12 +31,28 @@ ul{
 	padding: 0px 50px;
 	margin: 0px auto;
 }
-.jqlg-copyright{
+
+.jqlg-copyright {
 	position: relative;
 	display: block;
 	max-width: 100%;
 	width: 90%;
 	padding: 0px 50px;
 	margin: 0px auto;
-	clear:both;
+	clear: both;
+}
+
+/*Adding tooltips cf. http://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_ref_js_tooltip_css&stacked=h*/
+/* Tooltip */
+.jqlg_link +.tooltip>.tooltip-inner {
+	background-color: #8AC007;
+	color: #FFFFFF;
+	border: 1px solid green;
+	padding: 15px;
+	font-size: 20px;
+}
+
+/* Tooltip on right */
+.jqlg_link +.tooltip.right>.tooltip-arrow {
+	border-right: 5px solid black;
 }

@@ -58,6 +58,7 @@ if ( !class_exists('jqlg', false) ) {
 				$original_file_name = basename($original_file);
 				$image_local_dir = dirname($original_file);
 				$large_file_name = $original_file_name;
+				$title_alt = null;
 				if($real_image_informations['image_datas']['sizes']['slide-large-thumb']['file']){
 					$large_file_name = $real_image_informations['image_datas']['sizes']['slide-large-thumb']['file'];
 				} elseif ($real_image_informations['image_datas']['sizes']['large']['file']){
@@ -96,9 +97,21 @@ if ( !class_exists('jqlg', false) ) {
 					$author_name = $real_image_informations['author']->display_name;
 					$image_jqueryhtmlegend .= '<p><i>'.$author_name.'</i></p>';
 				}
+				if (strlen($image_post->post_excerpt) > 0){
+					$title_alt = $image_post->post_excerpt;
+				}else if (strlen($image_post->post_content) > 0){
+					$title_alt = strlen($image_post->post_content);
+				}else if (strlen($image_post->post_title) > 0){
+					$title_alt = $image_post->post_title;
+				}
 				$image_jqueryhtmlegend .='</div></div>';
 				$image_elements_array['html_legend'] = $image_jqueryhtmlegend;
-				$image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'"><a href="#">';
+				$image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'">';
+				if($title_alt != null){
+					$image_element .='<a href="#"class="jqlg_link" href="#" data-toggle="tooltip" data-placement="right" title="'.$title_alt.'">';
+				} else {
+					$image_element .='<a href="#">';
+				}
 				$image_element .= '<img src="'.$thumb_url.'"></img>';
 				$image_element .= '</a></li>';
 				$image_elements_array['html_image'] = $image_element;
@@ -189,7 +202,7 @@ if ( !class_exists('jqlg', false) ) {
 				if ($this->isimage($real_image_full_path)){
 					$description = $label_array[1];
 					$author = $label_array[2];
-					$title_alt = $description."|".$author;
+					$title_alt = $description;
 					$real_image_url = $images_base_url."/".$real_image_name;
 					$image_elements_array = array();
 					//TODO si le thumb  n'existe pas redimmensionner en PHP cf. l'import de Joomla vers Wordpress !!!!
@@ -218,7 +231,12 @@ if ( !class_exists('jqlg', false) ) {
 					$image_jqueryhtmlegend .= '<h5>'.$author.'</h5>';
 					$image_jqueryhtmlegend .='</div></div>';
 					$image_elements_array['html_legend'] = $image_jqueryhtmlegend;
-					$image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'"><a href="#">';
+					$image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'">';
+					if($title_alt != null && $title_alt != ''){
+						$image_element .= '<a class="jqlg_link" href="#" data-toggle="tooltip" data-placement="right" title="'.$title_alt.'">';
+					}else{ ///no Bootstrap tooltip
+						$image_element .= '<a href="#">';
+					}
 					$image_element .= '<img src="'.$thumb_url.'"></img>';
 					$image_element .= '</a></li>';
 					$image_elements_array['html_image'] = $image_element;
