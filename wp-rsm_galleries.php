@@ -434,9 +434,6 @@ $my_plugin = new wprsm_gals("f");
 add_filter ( "template_redirect", array($my_plugin,"rsmg_mod_content"), 10, 1 );
 
 $social_plugin = new socialNetworks();
+$social_plugin->initFunctionalities();
 add_shortcode("url", array($my_plugin,"rsmg_base_url"));
-add_action('media_buttons_context', array($social_plugin,'addGoogleButton'));
-
-
-
 ?>
