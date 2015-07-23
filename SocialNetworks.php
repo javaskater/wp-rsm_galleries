@@ -180,7 +180,7 @@ if ( !class_exists('socialNetworks', false) ) {
                         valbum_id = jQuery(this).attr('rel');
                         valbum_num = jQuery(this).attr('num');
                         vuser = jQuery("#vpml-user").val();
-                        valbum_json = "http://picasaweb.google.com/data/feed/api/user/" + vuser + "/album/" + valbum_id + "?kind=photo&alt=json&max-results=8&imgmax=1600";
+                        valbum_json = "http://picasaweb.google.com/data/feed/api/user/" + vuser + "/album/" + valbum_id + "?kind=photo&alt=json&imgmax=1600";
                         jQuery("#vcpage").val(valbum_json);
                         jQuery("#vcnum").val(valbum_num);
                         vpml_makephotogallery(valbum_json, valbum_num, 0);
@@ -260,21 +260,34 @@ if ( !class_exists('socialNetworks', false) ) {
                         jQuery.getJSON(jurl, function(data) {
                             if (data.feed.entry) {
                                 jQuery('#vpml-spinner').hide();
+                                album_authors_str_array={};
+                                jQuery.each( data.feed.author, function( mainkey, compoundedvalue ) {
+                                    jQuery.each( compoundedvalue, function(authorkey,authorvalue){
+                                        album_authors_str_array[authorkey]=authorvalue["$t"];
+                                    });
+                                });
+                                album_title=data.feed.title["$t"];
+                                metas = {'author_info':album_authors_str_array,'title':album_title};
+                                images=[];
                                 jQuery.each(data.feed.entry, function(i, element) {
                                     vimage = element["media$group"]["media$content"][0];
                                     vtitle = element.title["$t"];
+                                    vsummary = element.summary["$t"];
                                     if (vimage.url != '') {
-                                        vinsert = '<img src="' + vimage.url + '" width="' + vimage.width + '" height="' + vimage.height + '" title="' + vtitle + '" alt="' + vtitle + '"/>';
-                                        if (!tinyMCE.activeEditor || tinyMCE.activeEditor.isHidden()) {
-                                            vpml_insertatcaret('content', vinsert);
-                                        } else {
-                                            tinyMCE.activeEditor.execCommand('mceInsertContent', 0, vinsert);
-                                        }
-                                        jQuery.colorbox.close();
+                                        image={'src':vimage.url,'width':vimage.width,'height':vimage.height,'title':vtitle,'summary':vsummary};
+                                        images.push(image);
                                     } else {
                                         alert('Have an error! Please try again!');
                                     }
                                 });
+                                album_datas={'metas':metas,'images':images};
+                                vinsert='[picasa]'+JSON.stringify(album_datas, null, 2)+'[/picasa]'; //like the embed tag !!!!
+                                if (!tinyMCE.activeEditor || tinyMCE.activeEditor.isHidden()) {
+                                    vpml_insertatcaret('content', vinsert);
+                                } else {
+                                    tinyMCE.activeEditor.execCommand('mceInsertContent', 0, vinsert);
+                                }
+                                jQuery.colorbox.close();
                             } else {
                                 jQuery('#vpml-spinner').hide();
                                 jQuery('#vpml-page').html('');
