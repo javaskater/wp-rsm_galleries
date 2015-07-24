@@ -267,21 +267,25 @@ if ( !class_exists('socialNetworks', false) ) {
                                     });
                                 });
                                 album_title=data.feed.title["$t"];
+                                album_id=data.feed.gphoto$id["$t"];
                                 metas = {'author_info':album_authors_str_array,'title':album_title};
                                 images=[];
                                 jQuery.each(data.feed.entry, function(i, element) {
                                     vimage = element["media$group"]["media$content"][0];
+                                    vthumb = element["media$group"]["media$thumbnail"][0];
                                     vtitle = element.title["$t"];
                                     vsummary = element.summary["$t"];
                                     if (vimage.url != '') {
-                                        image={'src':vimage.url,'width':vimage.width,'height':vimage.height,'title':vtitle,'summary':vsummary};
-                                        images.push(image);
+                                        image={'src':vimage.url,'width':vimage.width,'height':vimage.height};
+                                        thumb={'src':vthumb.url,'width':vthumb.width,'height':vthumb.height};
+                                        text={'title':vtitle,'summary':vsummary};
+                                        images.push({'img':image,'thumb':thumb,'text':text});
                                     } else {
                                         alert('Have an error! Please try again!');
                                     }
                                 });
                                 album_datas={'metas':metas,'images':images};
-                                vinsert='[picasa]'+JSON.stringify(album_datas, null, 2)+'[/picasa]'; //like the embed tag !!!!
+                                vinsert='[picasa id="'+album_id+'"]'+JSON.stringify(album_datas, null, 2)+'[/picasa]'; //like the embed tag !!!!
                                 if (!tinyMCE.activeEditor || tinyMCE.activeEditor.isHidden()) {
                                     vpml_insertatcaret('content', vinsert);
                                 } else {
