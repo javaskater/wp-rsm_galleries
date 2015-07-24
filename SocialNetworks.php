@@ -85,7 +85,7 @@ if ( !class_exists('socialNetworks', false) ) {
                 </style>
                 <div style='display:none'>
                     <div id="vpml_popup" style="width: 640px; height: 585px; padding: 10px; overflow: hidden">
-                        <div style="width:98%; display: inline-block; margin-top: 5px; height:28px; line-height: 28px;"><input type="text" id="vpml-user" name="vpml-user" value="" size="20" placeholder="google username or id"/> <input type="button" id="vpml-search" class="button" value="Get album(s) of this user"/> <span id="vpml-spinner" style="display:none" class="vpml-loading"> </span></div>
+                        <div style="width:98%; display: inline-block; margin-top: 5px; height:28px; line-height: 28px;"><input type="text" id="vpml-user" name="vpml-user" value="" size="20" placeholder="google username or id"/> <input type="button" id="vpml-search" class="button" value="Récupérer les albums de cet utilisateur"/> <span id="vpml-spinner" style="display:none" class="vpml-loading"> </span></div>
                         <div id="vpml-container" class="vpml-container"><br/><br/>Enter Google username or id to start!</div>
                         <div id="vpml-page" class="vpml-page"></div><input type="hidden" id="vcpage" name="vcpage" value=""/><input type="hidden" id="vcnum" name="vcnum" value=""/>
                         <div id="vpml-use-image" class="vpml-use-image">
@@ -210,8 +210,8 @@ if ( !class_exists('socialNetworks', false) ) {
                                     valbum_title = element.title["$t"];
                                     valbum_num = element["gphoto$numphotos"]["$t"];
                                     valbum_id = element["gphoto$name"]["$t"];
-                                    album_images_visu='<div class="vpml-item-link"><a class="vpml-album-view" href="javascript: void(0);" num="' + valbum_num + '" rel="' + valbum_id + '" title="View all images in this album">View all</a></div>';
-                                    album_images_import='<div class="vpml-item-link"><a class="vpml-album-insert" href="javascript: void(0);" num="' + valbum_num + '" rel="' + valbum_id + '" title="Import all images In this Album as gallery">Import all</a></div>';
+                                    album_images_visu='<div class="vpml-item-link"><a class="vpml-album-view" href="javascript: void(0);" num="' + valbum_num + '" rel="' + valbum_id + '" title="Voir les images de cet Album">Voir les images</a></div>';
+                                    album_images_import='<div class="vpml-item-link"><a class="vpml-album-insert" href="javascript: void(0);" num="' + valbum_num + '" rel="' + valbum_id + '" title="Import all images In this Album as gallery">créer galerie</a></div>';
                                     jQuery('#vpml-container').append('<div class="vpml-item"><div class="vpml-item-grouplink">'+album_images_visu+album_images_import+'</div><div class="vpml-item-overlay"></div><img src="' + valbum_thumb.url + '"><span style="width:142px">Album: ' + valbum_title + '<br/>' + valbum_num + ' photos</span> </div>');
                                 });
                             } else {

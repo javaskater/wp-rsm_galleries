@@ -42,6 +42,17 @@ ul {
 	clear: both;
 }
 
+.jqlg-albumtitle {
+	position: relative;
+	display: block;
+	max-width: 100%;
+	width: 90%;
+	padding: 0em 2em;
+        font-size: 1.5em;
+	margin: 0px auto;
+	clear: both;
+}
+
 /*Adding tooltips cf. http://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_ref_js_tooltip_css&stacked=h*/
 /* Tooltip */
 .jqlg_link +.tooltip>.tooltip-inner {
