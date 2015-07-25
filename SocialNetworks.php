@@ -94,7 +94,7 @@ if ( !class_exists('socialNetworks', false) ) {
                             Width: <input type="text" id="vpml-width" size="8" value="0"> x Height: <input type="text" id="vpml-height" size="8" value="0"><br/><br/>
                             <input type="hidden" id="vpml-url" value="">
                             <input type="button" id="vpml_insert" class="button button-primary" value="Insert into post"> <a href="http://dunghv.com" target="_blank" title="Only available in full version"><input type="button" id="vpml-save" class="button button-disabled" value="Save & Insert"/></a> <a href="http://dunghv.com" target="_blank" title="Only available in full version"><input type="button" id="vpml-featured" class="button button-disabled" value="Set featured image"/></a>
-                            <div style="margin-top:5px;display:inline-block"><span class="vpml-loading" id="vpml-note" style="display:none">Saving image to Media Library...</span> <span id="vpml-error"></span></div>
+                            <div style="margin-top:5px;display:inline-block"><span class="vpml-loading" id="vpml-note" style="display:none">Sauvegarde en cours de image vers la Galerie de Médias...</span> <span id="vpml-error"></span></div>
                         </div>
                     </div>
                 </div>
@@ -233,7 +233,7 @@ if ( !class_exists('socialNetworks', false) ) {
                                 jQuery.each(data.feed.entry, function(i, element) {
                                     vimage = element["media$group"]["media$content"][0];
                                     vtitle = element.title["$t"];
-                                    jQuery('#vpml-container').append('<div class="vpml-item"><div class="vpml-item-link"><a href="' + vimage.url + '" target="_blank" title="View this image in new windows">View</a><a class="vpml-item-use" vpmltburl="' + vimage.url + '" vpmlurl="' + vimage.url + '" vpmlthumb="' + vimage.url + '" vpmltitle="' + vtitle + '" vpmlwidth="' + vimage.width + '" vpmlheight="' + vimage.height + '" href="javascript: void(0);">Use this image</a></div><div class="vpml-item-overlay"></div><img src="' + vimage.url + '"><span>' + vimage.width + ' x ' + vimage.height + '</span></div> ');
+                                    jQuery('#vpml-container').append('<div class="vpml-item"><div class="vpml-item-link"><a href="' + vimage.url + '" target="_blank" title="Voir image dans une nouvelle fenêtre">Visualiser</a><a class="vpml-item-use" vpmltburl="' + vimage.url + '" vpmlurl="' + vimage.url + '" vpmlthumb="' + vimage.url + '" vpmltitle="' + vtitle + '" vpmlwidth="' + vimage.width + '" vpmlheight="' + vimage.height + '" href="javascript: void(0);">Importer</a></div><div class="vpml-item-overlay"></div><img src="' + vimage.url + '"><span>' + vimage.width + ' x ' + vimage.height + '</span></div> ');
                                 });
                                 var vpages = jnum + ' images / ' + (Math.floor(jnum / 8) + 1) + ' pages ';
                                 var vselect = '<select name="vpml-page-select" id="vpml-page-select">';
@@ -249,7 +249,7 @@ if ( !class_exists('socialNetworks', false) ) {
                                 jQuery('#vpml-page').html(vpages + vselect);
                             } else {
                                 jQuery('#vpml-spinner').hide();
-                                jQuery('#vpml-container').html('No result! Please try again!');
+                                jQuery('#vpml-container').html('Aucun résultat! Essayez à nouveau!');
                                 jQuery('#vpml-page').html('');
                             }
                         });
@@ -284,7 +284,7 @@ if ( !class_exists('socialNetworks', false) ) {
                                         text={'title':vtitle,'summary':vsummary};
                                         images.push({'img':image,'medium':medium,'thumb':thumb,'text':text});
                                     } else {
-                                        alert('Have an error! Please try again!');
+                                        alert('Erreur!!! Essayez à nouveau!');
                                     }
                                 });
                                 album_datas={'metas':metas,'images':images};

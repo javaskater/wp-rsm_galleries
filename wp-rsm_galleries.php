@@ -9,6 +9,7 @@
  * License: MIT
  */
 require_once 'gallery_links.php';
+require_once 'socialnetworks_links.php';
 require_once 'JQueryLightGallery.php';
 require_once 'SocialNetworks.php';
 
@@ -110,7 +111,12 @@ if (! class_exists ( 'wprsm_gals', false )) {
 					$wp_links,
 					'restore_wp_link' 
 			), $content );
-			
+                        
+                        $picasa_links = new social_links("picasa",$type);
+			$content = $picasa_links->contentimagestogallery($content);
+                        
+                        
+                        
 			return $content;
 		}
 		/*
