@@ -15,7 +15,7 @@ if ( !class_exists('socialNetworks', false) ) {
                     wp_enqueue_style('colorbox', plugins_url('css/colorbox.css', __FILE__));
                 }
                 public function vpml_add_button($context) {
-                    $context .= '<a href="#vpml_popup" id="vpml-btn" class="button add_media" title="Mes Réseaux"><span class="wp-media-buttons-icon"></span> Mes Réseaux !!!!</a><input type="hidden" id="vpml_featured_url" name="vpml_featured_url" value="" />';
+                    $context .= '<a href="#vpml_popup" id="vpml-btn" class="button add_media" title="Mes Albums Picasa"><span class="wp-media-buttons-icon"></span>Mes Albums Picasa</a><input type="hidden" id="vpml_featured_url" name="vpml_featured_url" value="" />';
                     return $context;
                 }
 
@@ -268,18 +268,21 @@ if ( !class_exists('socialNetworks', false) ) {
                                 });
                                 album_title=data.feed.title["$t"];
                                 album_id=data.feed.gphoto$id["$t"];
-                                metas = {'author_info':album_authors_str_array,'title':album_title};
+                                album_name=data.feed.gphoto$name["$t"];
+                                metas = {'author_info':album_authors_str_array,'title':album_title,'id':album_id,'name':album_name};
                                 images=[];
                                 jQuery.each(data.feed.entry, function(i, element) {
                                     vimage = element["media$group"]["media$content"][0];
-                                    vthumb = element["media$group"]["media$thumbnail"][0];
+                                    vthumb = element["media$group"]["media$thumbnail"][1]; //O: small thumb, 1 medium thumb, 2 big thumb
+                                    vmedium = element["media$group"]["media$thumbnail"][1];
                                     vtitle = element.title["$t"];
                                     vsummary = element.summary["$t"];
                                     if (vimage.url != '') {
                                         image={'src':vimage.url,'width':vimage.width,'height':vimage.height};
+                                        medium={'src':vmedium.url,'width':vmedium.width,'height':vmedium.height};
                                         thumb={'src':vthumb.url,'width':vthumb.width,'height':vthumb.height};
                                         text={'title':vtitle,'summary':vsummary};
-                                        images.push({'img':image,'thumb':thumb,'text':text});
+                                        images.push({'img':image,'medium':medium,'thumb':thumb,'text':text});
                                     } else {
                                         alert('Have an error! Please try again!');
                                     }

@@ -307,20 +307,21 @@ if ( !class_exists('jqlg', false) ) {
 			
 		}
                 private function picasaimage_for_jquery_lightbox($image_infos,$galeries_infos,$index_image){
-                    $author = '<a href="'.$galeries_infos->author_info->uri.'" target="blank">'.$galeries_infos->author_info->name.'</a>';
-                    $description = '<h4>'.$image_infos->text->title.'</h4><h5>'.$image_infos->text->summary.'</h5><p><i>('.$galeries_infos->title.'</i>-->'.$author.')</p>';
+                    $author_link = '<a href="'.$galeries_infos->author_info->uri.'" target="blank">'.$galeries_infos->author_info->name.'</a>';
+                    $galery_link = '<a href="'.$galeries_infos->author_info->uri.'/'.$galeries_infos->name.'" target="blank">'.$galeries_infos->title.'</a>';
+                    $description = '<h4>'.$image_infos->text->title.'</h4><h5>'.$image_infos->text->summary.'</h5><p><i>('.$galery_link.'</i>-->'.$author_link.')</p>';
                     $title_alt = '';
                     if (strlen($image_infos->text->title) > 0){
                         $title_alt .= $image_infos->text->title;
                     }
                     if (strlen($image_infos->text->summary) > 0){
-                        $title_alt .= $image_infos->text->summary;
+                        $title_alt .= '|'.$image_infos->text->summary;
                     }
                     $real_image_url = $image_infos->img->src;
                     $image_elements_array = array();
                     //TODO si le thumb  n'existe pas redimmensionner en PHP cf. l'import de Joomla vers Wordpress !!!!
                     $large_image_url = $real_image_url;
-                    $medium_image_url = $large_image_url;
+                    $medium_image_url = $image_infos->medium->src;
                     $thumb_url = $image_infos->thumb->src;
 
                     $image_jqueryhtmlegend = '<div id="html'.$index_image.'" style="display:none"><div class="custom-html">';
@@ -370,7 +371,8 @@ if ( !class_exists('jqlg', false) ) {
                                 }
                                 $main_jqueryullist .= '</ul>';
                                 $author = '<a href="'.$infos_gallery->author_info->uri.'" target="blank">'.$infos_gallery->author_info->name.'</a>';
-                                $galery_title='<p>Galerie Picasa: '.$infos_gallery->title.', auteur: '.$author.'</p>';
+                                $galery_link = '<a href="'.$infos_gallery->author_info->uri.'/'.$infos_gallery->name.'" target="blank">'.$infos_gallery->title.'</a>';
+                                $galery_title='<p>Galerie Picasa: '.$galery_link.', auteur: '.$author.'</p>';
                                 return "<div class='jqlg-albumtitle'>".$galery_title."</div><div class='jqlg-container'>".$main_jqueryullist.$main_jqueryhtmlegend."</div>";
                             }
 			} else {
