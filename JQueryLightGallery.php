@@ -330,11 +330,12 @@ if ( !class_exists('jqlg', false) ) {
                     $image_elements_array['html_legend'] = $image_jqueryhtmlegend;
                     $image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'">';
                     if($title_alt != null && $title_alt != ''){
-                            $image_element .= '<a class="jqlg_link" href="#" data-toggle="tooltip" data-placement="right" title="'.$title_alt.'">';
+                            $image_element .= '<a class="jqlg_link" href="#" data-placement="right" title="'.$title_alt.'">';
                     }else{ ///no Bootstrap tooltip
                             $image_element .= '<a href="#">';
                     }
-                    $image_element .= '<img src="'.$thumb_url.'"></img>';
+                    //$image_element .= '<img src="'.$thumb_url.'"></img>';
+                    $image_element .= '<img src="'.$medium_image_url.'"></img>';
                     $image_element .= '</a></li>';
                     $image_elements_array['html_image'] = $image_element;
                     return $image_elements_array;
@@ -356,7 +357,7 @@ if ( !class_exists('jqlg', false) ) {
                                 //return var_dump($magalerie);
                                 $id_gallery = $atts['id'];
                                 $infos_gallery = $magalerie->metas;
-                                $main_jqueryullist = '<ul class="light-gallery-serie gallery list-unstyled">';
+                                $main_jqueryullist = '<div class="rsmpicasagrid"><ul class="light-gallery-serie list-unstyled">';
 				$main_jqueryhtmlegend = '';
 				$index = 0;
                                 foreach ($magalerie->images as $picasa_image){
@@ -369,7 +370,7 @@ if ( !class_exists('jqlg', false) ) {
                                                 $index++;
                                         }
                                 }
-                                $main_jqueryullist .= '</ul>';
+                                $main_jqueryullist .= '</ul></div>';
                                 $author = '<a href="'.$infos_gallery->author_info->uri.'" target="blank">'.$infos_gallery->author_info->name.'</a>';
                                 $galery_link = '<a href="'.$infos_gallery->author_info->uri.'/'.$infos_gallery->name.'" target="blank">'.$infos_gallery->title.'</a>';
                                 $galery_title='<p>Galerie Picasa: '.$galery_link.', auteur: '.$author.'</p>';

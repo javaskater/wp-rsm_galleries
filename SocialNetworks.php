@@ -272,9 +272,11 @@ if ( !class_exists('socialNetworks', false) ) {
                                 metas = {'author_info':album_authors_str_array,'title':album_title,'id':album_id,'name':album_name};
                                 images=[];
                                 jQuery.each(data.feed.entry, function(i, element) {
+                                    //The Image to display !!!
                                     vimage = element["media$group"]["media$content"][0];
-                                    vthumb = element["media$group"]["media$thumbnail"][1]; //O: small thumb, 1 medium thumb, 2 big thumb
-                                    vmedium = element["media$group"]["media$thumbnail"][1];
+                                    //The Thumbs; Picasa proposes  3 sizes ==> O: small thumb, 1 medium thumb, 2 big thumb
+                                    vthumb = element["media$group"]["media$thumbnail"][1]; //
+                                    vmedium = element["media$group"]["media$thumbnail"][2];
                                     vtitle = element.title["$t"];
                                     vsummary = element.summary["$t"];
                                     if (vimage.url != '') {

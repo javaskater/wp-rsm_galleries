@@ -79,10 +79,31 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			
 			/*
 			 * Pour les tests de Gridify !!!
-			 * https://github.com/hongkhanh/gridify
+			 * https://github.com/hongkhanh/gridify //problème il passe au dessus de toutes les div car absolu !!!
 			 */
 			wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/gridify.js', array ('jquery'), '0.1', true );
-			wp_enqueue_style ( 'gridify', plugin_dir_url ( __FILE__ ) . 'css/demo_gridify.css', false, 'r3' );
+			wp_enqueue_style ( 'gridify', plugin_dir_url ( __FILE__ ) . 'css/rsm_gridify.css', false, 'r3' );
+                        
+                        /*
+			 * Pour les tests d'un autre Gridify !!!
+			 * http://mattlayton.co.uk/gridify/
+			 */
+                        //wp_enqueue_script ( 'smartresize', plugin_dir_url ( __FILE__ ) . 'js/jquery.smartresize.js', array ('jquery'), '0.1', true );
+                        //wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/jquery.gridify.js', array ('smartresize','jquery'), '0.1', true );
+                        
+                        /*
+			 * Pour les tests de Gridify !!!
+			 * https://github.com/suprb/Grid-A-Licious 
+                         * recommmandé par https://codegeekz.com/25-best-jquery-grid-plugins-developers/ il ne crée pas de div absolute ?
+			 */
+			//wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/jquery.grid-a-licious.js', array ('jquery'), '0.1', true );
+                        
+                         /*
+			 * Pour les tests de Gridify !!!
+			 * https://github.com/suprb/nested/
+                         * recommmandé par https://codegeekz.com/25-best-jquery-grid-plugins-developers/ il ne crée pas de div absolute ?
+			 */
+			//wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/jquery.nested.js', array ('jquery'), '0.1', true );
 			
 			wp_enqueue_script ( 'gallery_lightbox', plugin_dir_url ( __FILE__ ) . 'js/gallery.js', array (
 			'imagelightbox',
