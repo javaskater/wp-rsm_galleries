@@ -58,9 +58,9 @@ if (! class_exists ( 'wprsm_gals', false )) {
 			/*
 			 * Pour la partie SliceBox Plugin https://github.com/codrops/Slicebox
 			*/
-			wp_enqueue_style ( 'sliceBox', plugin_dir_url ( __FILE__ ) . 'css/slicebox.css', false, 'r3' );
-			wp_enqueue_style ( 'custom', plugin_dir_url ( __FILE__ ) . 'css/custom_slicebox.css', false, 'r3' );
-			wp_enqueue_style ( 'demo', plugin_dir_url ( __FILE__ ) . 'css/demo_slicebox.css', false, 'r3' );
+			//wp_enqueue_style ( 'sliceBox', plugin_dir_url ( __FILE__ ) . 'css/slicebox.css', false, 'r3' );
+			//wp_enqueue_style ( 'custom', plugin_dir_url ( __FILE__ ) . 'css/custom_slicebox.css', false, 'r3' );
+			//wp_enqueue_style ( 'demo', plugin_dir_url ( __FILE__ ) . 'css/demo_slicebox.css', false, 'r3' );
 			/*
 			 * see http://codex.wordpress.org/Function_Reference/wp_add_inline_style and
 			 */
@@ -69,20 +69,20 @@ if (! class_exists ( 'wprsm_gals', false )) {
       		.wrapper { position: relative; max-width: 840px; width: 100%; padding: 0 50px; margin: 0 auto; }
 			}";
 			wp_add_inline_style( 'inline-sliceBox-style', $inline_sliceBox_css );*/
-			wp_enqueue_script ( 'modernizer', plugin_dir_url ( __FILE__ ) . 'js/modernizr.custom.46884.js', array (
-					'jquery'
-			), '0.1', true );
-			wp_enqueue_script ( 'slicebox', plugin_dir_url ( __FILE__ ) . 'js/jquery.slicebox.min.js', array (
-					'modernizer',
-					'jquery'
-			), '1.0', true );
+			//wp_enqueue_script ( 'modernizer', plugin_dir_url ( __FILE__ ) . 'js/modernizr.custom.46884.js', array (
+			//		'jquery'
+			//), '0.1', true );
+			//wp_enqueue_script ( 'slicebox', plugin_dir_url ( __FILE__ ) . 'js/jquery.slicebox.min.js', array (
+			//		'modernizer',
+			//		'jquery'
+			//), '1.0', true );
 			
 			/*
 			 * Pour les tests de Gridify !!!
 			 * https://github.com/hongkhanh/gridify //problème il passe au dessus de toutes les div car absolu !!!
 			 */
-			wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/gridify.js', array ('jquery'), '0.1', true );
-			wp_enqueue_style ( 'gridify', plugin_dir_url ( __FILE__ ) . 'css/rsm_gridify.css', false, 'r3' );
+			//wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/gridify.js', array ('jquery'), '0.1', true );
+			//wp_enqueue_style ( 'gridify', plugin_dir_url ( __FILE__ ) . 'css/rsm_gridify.css', false, 'r3' );
                         
                         /*
 			 * Pour les tests d'un autre Gridify !!!
@@ -104,12 +104,22 @@ if (! class_exists ( 'wprsm_gals', false )) {
                          * recommmandé par https://codegeekz.com/25-best-jquery-grid-plugins-developers/ il ne crée pas de div absolute ?
 			 */
 			//wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/jquery.nested.js', array ('jquery'), '0.1', true );
+                        
+                        /*
+			 * Pour les tests d'un autre système de Grille avec Mansonry !!!
+			 * http://masonry.desandro.com/#download
+			 */
+                        wp_enqueue_script ( 'imagesloaded', plugin_dir_url ( __FILE__ ) . 'js/imagesloaded.pkgd.js', array ('jquery'), '0.1', true );
+                        wp_enqueue_script ( 'jqmasonry', plugin_dir_url ( __FILE__ ) . 'js/masonry.pkgd.js', array ('jquery'), '0.1', true );
+                        //wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/masonry.pkgd.min.js', array ('jquery'), '0.1', true );
+                        //wp_enqueue_script ( 'gridify', plugin_dir_url ( __FILE__ ) . 'js/jquery.masonry.min.js', array ('jquery'), '0.1', true );
 			
 			wp_enqueue_script ( 'gallery_lightbox', plugin_dir_url ( __FILE__ ) . 'js/gallery.js', array (
 			'imagelightbox',
 			//'elastiside',
-			'slicebox',
-			'gridify'
+			//'slicebox',
+                        'imagesloaded',
+			'jqmasonry'
 					), '0.1', true );
 			
 		}

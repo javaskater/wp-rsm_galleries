@@ -321,22 +321,31 @@ if ( !class_exists('jqlg', false) ) {
                     $image_elements_array = array();
                     //TODO si le thumb  n'existe pas redimmensionner en PHP cf. l'import de Joomla vers Wordpress !!!!
                     $large_image_url = $real_image_url;
+                    $medium_image_infos = $image_infos->medium;
                     $medium_image_url = $image_infos->medium->src;
+                    $medium_image_mansory_class = "grid-item";
+                    //$medium_image_mansory_class = "grid-item grid-item--height2";
+                    /*if($medium_image_infos->width > $medium_image_infos->height){
+                        $medium_image_mansory_class = "grid-item grid-item--width2 grid-item--height2 ";
+                    }*/
                     $thumb_url = $image_infos->thumb->src;
 
                     $image_jqueryhtmlegend = '<div id="html'.$index_image.'" style="display:none"><div class="custom-html">';
                     $image_jqueryhtmlegend .= $description;
                     $image_jqueryhtmlegend .='</div></div>';
                     $image_elements_array['html_legend'] = $image_jqueryhtmlegend;
+                    $image_element = '';
                     $image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'">';
-                    if($title_alt != null && $title_alt != ''){
-                            $image_element .= '<a class="jqlg_link" href="#" data-placement="right" title="'.$title_alt.'">';
-                    }else{ ///no Bootstrap tooltip
-                            $image_element .= '<a href="#">';
-                    }
-                    //$image_element .= '<img src="'.$thumb_url.'"></img>';
+                    $image_element .= '<div class="'.$medium_image_mansory_class.'">';
+                    //if($title_alt != null && $title_alt != ''){
+                      ///      $image_element .= '<a class="jqlg_link" href="#" data-placement="right" title="'.$title_alt.'">';
+                    //}else{ ///no Bootstrap tooltip
+                          $image_element .= '<a href="#">';
+                    //}
+                    //$image_element .= '<img src="'.$medium_image_url.'"></img>';
                     $image_element .= '<img src="'.$medium_image_url.'"></img>';
-                    $image_element .= '</a></li>';
+                    $image_element .= '</a></div></li>';
+                    //$image_element .= '</div>';
                     $image_elements_array['html_image'] = $image_element;
                     return $image_elements_array;
 		}
@@ -357,7 +366,8 @@ if ( !class_exists('jqlg', false) ) {
                                 //return var_dump($magalerie);
                                 $id_gallery = $atts['id'];
                                 $infos_gallery = $magalerie->metas;
-                                $main_jqueryullist = '<div class="rsmpicasagrid"><ul class="light-gallery-serie list-unstyled">';
+                                //$main_jqueryullist = '<div class="rsmpicasagrid"><ul class="light-gallery-serie list-unstyled">';
+                                $main_jqueryullist = '<div class="grid"><div class="grid-sizer"></div><ul class="light-gallery-serie list-unstyled">';
 				$main_jqueryhtmlegend = '';
 				$index = 0;
                                 foreach ($magalerie->images as $picasa_image){
@@ -370,10 +380,12 @@ if ( !class_exists('jqlg', false) ) {
                                                 $index++;
                                         }
                                 }
+                                //$main_jqueryullist .= '</ul></div>';
                                 $main_jqueryullist .= '</ul></div>';
                                 $author = '<a href="'.$infos_gallery->author_info->uri.'" target="blank">'.$infos_gallery->author_info->name.'</a>';
                                 $galery_link = '<a href="'.$infos_gallery->author_info->uri.'/'.$infos_gallery->name.'" target="blank">'.$infos_gallery->title.'</a>';
                                 $galery_title='<p>Galerie Picasa: '.$galery_link.', auteur: '.$author.'</p>';
+                                //return "<div class='jqlg-albumtitle'>".$galery_title."</div><div class='jqlg-container'>".$main_jqueryullist.$main_jqueryhtmlegend."</div>";
                                 return "<div class='jqlg-albumtitle'>".$galery_title."</div><div class='jqlg-container'>".$main_jqueryullist.$main_jqueryhtmlegend."</div>";
                             }
 			} else {

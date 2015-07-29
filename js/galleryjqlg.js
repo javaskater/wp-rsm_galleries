@@ -7,14 +7,22 @@
 	$(".light-gallery-serie").lightGallery();
 	$('[data-toggle="tooltip"]').tooltip(); 
         //test of Gridify for social networks !!!!
-            var options =
-            {
-                srcNode: 'img',             // grid items (class, node)
-                margin: '10px',             // margin in pixel, default: 0px
-                width: '150px',             // grid item width in pixel, default: 220px
-                max_width: '',              // dynamic gird item width if specified, (pixel)
-                resizable: true,            // re-layout if window resize
-                transition: 'all 0.5s ease' // support transition for CSS3, default: all 0.5s ease
-            }
-            $('.rsmpicasagrid').gridify(options);
+           // var options =
+            //{
+              //  srcNode: 'img',             // grid items (class, node)
+              //  margin: '10px',             // margin in pixel, default: 0px
+                //width: '150px',             // grid item width in pixel, default: 220px
+                //max_width: '',              // dynamic gird item width if specified, (pixel)
+                ///resizable: true,            // re-layout if window resize
+                //transition: 'all 0.5s ease' // support transition for CSS3, default: all 0.5s ease
+            //}
+            //$('.rsmpicasagrid').gridify(options);
+            // init Masonry after all images have loaded cf  http://codepen.io/desandro/pen/bdgRzg
+            var $grid = $('.grid').imagesLoaded( function() {
+              $grid.masonry({
+                itemSelector: '.grid-item',
+                percentPosition: true,
+                columnWidth: '.grid-sizer'
+              }); 
+            });
 })(jQuery);

@@ -67,3 +67,43 @@ ul {
 .jqlg_link +.tooltip.right>.tooltip-arrow {
 	border-right: 5px solid black;
 }
+/* ---- grid-item ---- see http://codepen.io/desandro/pen/bdgRzg*/
+
+/* force scrollbar */
+
+
+.grid {
+  /*background: #DDD;*/
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+/* clear fix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ---- .grid-item ---- */
+
+.grid-sizer{
+    width:25%;
+}
+.grid-item {
+  width: 24.5%;
+  padding-left: 0.5%;
+  padding-bottom: 1%;
+}
+
+.grid-item {
+  float: left;
+}
+
+.grid-item img {
+  display: block;
+  width:98%;
+  max-width: 100%;
+  border: 1px solid #ec534d;
+}
