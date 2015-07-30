@@ -343,8 +343,8 @@ if ( !class_exists('jqlg', false) ) {
                           $image_element .= '<a href="#">';
                     //}
                     //$image_element .= '<img src="'.$medium_image_url.'"></img>';
-                    $image_element .= '<img src="'.$medium_image_url.'"></img>';
-                    $image_element .= '</a></div></li>';
+                    $image_element .= '<div class="wrapper"><img src="'.$medium_image_url.'"></img>';
+                    $image_element .= '<div class="description"><div class="description_content">'.$description.'</div></div></div></a></div></li>';
                     //$image_element .= '</div>';
                     $image_elements_array['html_image'] = $image_element;
                     return $image_elements_array;
