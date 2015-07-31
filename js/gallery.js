@@ -222,5 +222,30 @@
 		      })();
 		      Page.init();
 		});
+                /*
+                 * Adding a Caption effecct aroudd all images with lightBox effecct!
+                 * see http://web.enavu.com/tutorials/making-image-captions-using-jquery/
+                 */
+                $( 'a[data-imagelightbox]' ).each(function(index,element){
+                    var $a = $(element);
+                    //console.log($a);
+                    $a.find('img').each(function(index2,element2){
+                        $image = $(element2);
+                        ///console.log($image);
+                        var description = $image.attr('alt');
+                        if(description === null || description.length == 0){
+                            description = $image.attr('title');
+                        }
+                        //console.log(description);
+                        //appends the clone https://api.jquery.com/clone/
+                        var $description = $("<div class='description'>").html("<div class='description-content' style='padding:0.5em'><h5 style='color:#ec534d'>"+description+"</h5></div>");
+                        var $imagewithcaption = $("<div class='wrapper'>");
+                        $description.appendTo($imagewithcaption);
+                        $image.clone().appendTo($imagewithcaption);
+                        //and replace the original element http://api.jquery.com/replacewith/
+                        $image.replaceWith( $imagewithcaption );
+                        //console.log($image);
+                    });
+                });
 		
 	})(jQuery);
