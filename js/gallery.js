@@ -233,13 +233,19 @@
                         $image = $(element2);
                         ///console.log($image);
                         var description = $image.attr('alt');
+                        var width = $image.attr('width');
+                        var height = $image.attr('height')
                         if(description === null || description.length == 0){
                             description = $image.attr('title');
                         }
                         //console.log(description);
                         //appends the clone https://api.jquery.com/clone/
-                        var $description = $("<div class='description'>").html("<div class='description-content' style='padding:0.5em'><h5 style='color:#ec534d'>"+description+"</h5></div>");
+                        var $description = $("<div class='description'>").html("<div class='description-content' style='padding:0.5em'><span style='color:white;font-style:italic;font-family:lato, sans-serif'>"+description+"</span></div>");
                         var $imagewithcaption = $("<div class='wrapper'>");
+                        //for bottom attribute to work we have to define the height attribute of the wrapper div!!!
+                        // see http://stackoverflow.com/questions/10733080/absolutebottom-does-not-work
+                        $imagewithcaption.css('width',width);
+                        $imagewithcaption.css('height',height);
                         $description.appendTo($imagewithcaption);
                         $image.clone().appendTo($imagewithcaption);
                         //and replace the original element http://api.jquery.com/replacewith/
