@@ -71,12 +71,18 @@ if ( !class_exists('jqlg', false) ) {
 				}
 				$large_image_url = $this->base_url.'/wp-content/uploads/'.$image_local_dir.'/'.$large_file_name;
 				
-				$medium_file_name = $original_file_name;
-				if($real_image_informations['image_datas']['sizes']['slide-medium-thumb']['file']){
+				/*$medium_file_name = $original_file_name;
+                                $medium_image_width = $real_image_informations['image_datas']['sizes']['medium']['width'];
+                                $medium_image_height = $real_image_informations['image_datas']['sizes']['medium']['height'];
+				if($real_image_informations['image_datas']['sizes']['slide-medium-thumb']['file']){//sildemedium thumb crope l'image pour avoir toujours le même format !!!
 					$medium_file_name = $real_image_informations['image_datas']['sizes']['slide-medium-thumb']['file'];
-				} elseif ($real_image_informations['image_datas']['sizes']['medium']['file']){
+                                        $medium_image_width = $real_image_informations['image_datas']['sizes']['slide-medium-thumb']['width'];
+                                        $medium_image_height = $real_image_informations['image_datas']['sizes']['slide-medium-thumb']['height'];
+				} elseif ($real_image_informations['image_datas']['sizes']['medium']['file']){*/
 					$medium_file_name = $real_image_informations['image_datas']['sizes']['medium']['file'];
-				}
+                                        /*$medium_image_width = $real_image_informations['image_datas']['sizes']['medium']['width'];
+                                        $medium_image_height = $real_image_informations['image_datas']['sizes']['medium']['height'];
+				}*/
 				$medium_image_url = $this->base_url.'/wp-content/uploads/'.$image_local_dir.'/'.$medium_file_name;
 				
 				$thumb_file_name = $original_file_name;
@@ -128,9 +134,11 @@ if ( !class_exists('jqlg', false) ) {
                                 //}else{ ///no Bootstrap tooltip
                                       $image_element .= '<a href="#">';
                                 //}
-                                //$image_element .= '<img src="'.$medium_image_url.'"></img>';
-                                $image_element .= '<div class="wrapper"><img src="'.$large_image_url.'"></img>';
-                                $image_element .= '<div class="description"><div class="description_content">'.$title_alt.'</div></div></div></a></div></li>';
+                                /*$image_element .= '<img src="'.$medium_image_url.'"></img>';
+                                $image_width = $medium_image_width;
+                                $image_height = $medium_image_height;*/
+                                $image_element .= '<div class="wrapper"><img src="'.$medium_image_url.'"></img>';
+                                $image_element .= '<div class="description"><div class="description_content"><h4>'.$title_alt.'</h4><h5>'.$author_name.'</h5></div></div></div></a></div></li>';
                                 //$image_element .= '</div>';
                                 $image_elements_array['html_image'] = $image_element;
 			}
@@ -155,7 +163,7 @@ if ( !class_exists('jqlg', false) ) {
 			}
 			if ($request != null) {
 				$image_posts = $wpdb->get_results ( $request );
-				$main_jqueryullist = '<div class="grid"><div class="grid-sizer"></div><ul class="light-gallery-serie gallery list-unstyled">';
+				$main_jqueryullist = '<div class="grid"><div class="grid-sizer"></div><ul class="light-gallery-serie list-unstyled">';
 				$main_jqueryhtmlegend = '';
 				$index = 0;
 				if ($the_ids == null) {
@@ -273,7 +281,7 @@ if ( !class_exists('jqlg', false) ) {
                                         //}
                                         //$image_element .= '<img src="'.$medium_image_url.'"></img>';
                                         $image_element .= '<div class="wrapper"><img src="'.$medium_image_url.'"></img>';
-                                        $image_element .= '<div class="description"><div class="description_content">'.$description.'</div></div></div></a></div></li>';
+                                        $image_element .= '<div class="description"><div class="description_content"><h4>'.$description.'</h4><h5>'.$author.'</h5></div></div></div></a></div></li>';
                                         //$image_element .= '</div>';
                                         $image_elements_array['html_image'] = $image_element;
 					return $image_elements_array;
