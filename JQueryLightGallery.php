@@ -54,6 +54,11 @@ if ( !class_exists('jqlg', false) ) {
 		private function image_for_jquery_lightbox($real_image_informations,$index_image){
 			$image_elements_array = array();
 			if($real_image_informations['image_datas']){
+                                $medium_image_mansory_class = "grid-item";
+                                //$medium_image_mansory_class = "grid-item grid-item--height2";
+                                /*if($medium_image_infos->width > $medium_image_infos->height){
+                                    $medium_image_mansory_class = "grid-item grid-item--width2 grid-item--height2 ";
+                                }*/
 				$original_file = $real_image_informations['image_datas']['file'];
 				$original_file_name = basename($original_file);
 				$image_local_dir = dirname($original_file);
@@ -106,7 +111,7 @@ if ( !class_exists('jqlg', false) ) {
 				}
 				$image_jqueryhtmlegend .='</div></div>';
 				$image_elements_array['html_legend'] = $image_jqueryhtmlegend;
-				$image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'">';
+				/*$image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'">';
 				if($title_alt != null){
 					$image_element .='<a href="#"class="jqlg_link" href="#" data-toggle="tooltip" data-placement="right" title="'.$title_alt.'">';
 				} else {
@@ -114,7 +119,20 @@ if ( !class_exists('jqlg', false) ) {
 				}
 				$image_element .= '<img src="'.$thumb_url.'"></img>';
 				$image_element .= '</a></li>';
-				$image_elements_array['html_image'] = $image_element;
+				$image_elements_array['html_image'] = $image_element;*/
+                                $image_element = '';
+                                $image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'">';
+                                $image_element .= '<div class="'.$medium_image_mansory_class.'">';
+                                //if($title_alt != null && $title_alt != ''){
+                                  ///      $image_element .= '<a class="jqlg_link" href="#" data-placement="right" title="'.$title_alt.'">';
+                                //}else{ ///no Bootstrap tooltip
+                                      $image_element .= '<a href="#">';
+                                //}
+                                //$image_element .= '<img src="'.$medium_image_url.'"></img>';
+                                $image_element .= '<div class="wrapper"><img src="'.$large_image_url.'"></img>';
+                                $image_element .= '<div class="description"><div class="description_content">'.$title_alt.'</div></div></div></a></div></li>';
+                                //$image_element .= '</div>';
+                                $image_elements_array['html_image'] = $image_element;
 			}
 			return $image_elements_array;
 		}
@@ -137,7 +155,7 @@ if ( !class_exists('jqlg', false) ) {
 			}
 			if ($request != null) {
 				$image_posts = $wpdb->get_results ( $request );
-				$main_jqueryullist = '<ul class="light-gallery-serie gallery list-unstyled">';
+				$main_jqueryullist = '<div class="grid"><div class="grid-sizer"></div><ul class="light-gallery-serie gallery list-unstyled">';
 				$main_jqueryhtmlegend = '';
 				$index = 0;
 				if ($the_ids == null) {
@@ -170,7 +188,7 @@ if ( !class_exists('jqlg', false) ) {
 						}
 					}
 				}
-				$main_jqueryullist .= '</ul>';
+				$main_jqueryullist .= '</ul></div>';
 				return "<div class='jqlg-container'>".$main_jqueryullist.$main_jqueryhtmlegend."</div>";
 		
 			}
@@ -200,6 +218,11 @@ if ( !class_exists('jqlg', false) ) {
 				$real_image_name = $label_array[0];
 				$real_image_full_path = $images_dir."/".$real_image_name;
 				if ($this->isimage($real_image_full_path)){
+                                        $medium_image_mansory_class = "grid-item";
+                                        //$medium_image_mansory_class = "grid-item grid-item--height2";
+                                        /*if($medium_image_infos->width > $medium_image_infos->height){
+                                            $medium_image_mansory_class = "grid-item grid-item--width2 grid-item--height2 ";
+                                        }*/
 					$description = $label_array[1];
 					$author = $label_array[2];
 					$title_alt = $description;
@@ -231,7 +254,7 @@ if ( !class_exists('jqlg', false) ) {
 					$image_jqueryhtmlegend .= '<h5>'.$author.'</h5>';
 					$image_jqueryhtmlegend .='</div></div>';
 					$image_elements_array['html_legend'] = $image_jqueryhtmlegend;
-					$image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'">';
+					/*$image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'">';
 					if($title_alt != null && $title_alt != ''){
 						$image_element .= '<a class="jqlg_link" href="#" data-toggle="tooltip" data-placement="right" title="'.$title_alt.'">';
 					}else{ ///no Bootstrap tooltip
@@ -239,7 +262,20 @@ if ( !class_exists('jqlg', false) ) {
 					}
 					$image_element .= '<img src="'.$thumb_url.'"></img>';
 					$image_element .= '</a></li>';
-					$image_elements_array['html_image'] = $image_element;
+					$image_elements_array['html_image'] = $image_element;*/
+                                        $image_element = '';
+                                        $image_element = '<li data-src="'.$large_image_url.'" data-responsive-src="'.$medium_image_url.'" data-sub-html="#html'.$index_image.'">';
+                                        $image_element .= '<div class="'.$medium_image_mansory_class.'">';
+                                        //if($title_alt != null && $title_alt != ''){
+                                          ///      $image_element .= '<a class="jqlg_link" href="#" data-placement="right" title="'.$title_alt.'">';
+                                        //}else{ ///no Bootstrap tooltip
+                                              $image_element .= '<a href="#">';
+                                        //}
+                                        //$image_element .= '<img src="'.$medium_image_url.'"></img>';
+                                        $image_element .= '<div class="wrapper"><img src="'.$medium_image_url.'"></img>';
+                                        $image_element .= '<div class="description"><div class="description_content">'.$description.'</div></div></div></a></div></li>';
+                                        //$image_element .= '</div>';
+                                        $image_elements_array['html_image'] = $image_element;
 					return $image_elements_array;
 				}
 			}
@@ -264,8 +300,10 @@ if ( !class_exists('jqlg', false) ) {
 				/*
 				 * La fonction finale ...
 				 */
-				$main_jqueryullist = '<ul class="light-gallery-serie gallery list-unstyled">';
-				$main_jqueryhtmlegend = '';
+				
+                                //$main_jqueryullist = '<ul class="light-gallery-serie gallery list-unstyled">';
+				$main_jqueryullist = '<div class="grid"><div class="grid-sizer"></div><ul class="light-gallery-serie list-unstyled">';
+                                $main_jqueryhtmlegend = '';
 				$index = 0;
 				if(file_exists($labels_path) && is_readable ($labels_path) && $lp = fopen($labels_path,'r')){
 					while (($label = fgets($lp)) !== false){
@@ -279,7 +317,7 @@ if ( !class_exists('jqlg', false) ) {
 							$index++;
 						}
 					}
-					$main_jqueryullist .= '</ul>';
+					$main_jqueryullist .= '</ul></div>';
 					return "<div class='jqlg-container'>".$main_jqueryullist.$main_jqueryhtmlegend."</div>";
 				}else{
 					//return "<p>Galerie fichier de lables:".$labels_path." non trouvé</p>";
@@ -297,7 +335,7 @@ if ( !class_exists('jqlg', false) ) {
 								}
 							}
 						}
-						$main_jqueryullist .= '</ul>';
+						$main_jqueryullist .= '</ul></div>';
 						return "<div class='jqlg-container'>".$main_jqueryullist."</div>";
 					}else{
 						return "<p>Galerie fichier de lables:".$labels_path." non trouvé et ".$images_path." n'est pas un répertoire valide!</p>";
