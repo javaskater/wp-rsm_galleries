@@ -627,3 +627,14 @@ left: 0;
 	margin-bottom: 5px;
 	margin-top: 15px;
 }
+
+.description h5{
+    font-size:14px;
+    color:white;
+}
+
+.description h6{
+    font-size:12px;
+    font-style: italic;
+    color:white;
+}
