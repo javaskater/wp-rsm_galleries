@@ -226,6 +226,10 @@
                  * Adding a Caption effecct aroudd all images with lightBox effecct!
                  * see http://web.enavu.com/tutorials/making-image-captions-using-jquery/
                  */
+                var copyright = {"url":"https://github.com/javaskater/wp-rsm_galleries", "desc":"Javaskater's Images for Wordpress"};
+                function greet( event ) {
+                    alert( "Hello " + event.data.url );
+                }
                 $( 'a[data-imagelightbox]' ).each(function(index,element){
                     var $a = $(element);
                     //console.log($a);
@@ -240,7 +244,7 @@
                         }
                         //console.log(description);
                         //appends the clone https://api.jquery.com/clone/
-                        var $description = $("<div class='description'>").html("<div class='description-content' style='padding:0.5em'><span style='color:white;font-style:italic;font-family:lato, sans-serif'>"+description+"</span></div>");
+                        var $description = $("<div class='description'>").html("<div class='description-content' style='padding:0.5em'><h5>"+description+"</h5><h6 class='copyright'>Powered by: </h6></div>");
                         var $imagewithcaption = $("<div class='wrapper'>");
                         //for bottom attribute to work we have to define the height attribute of the wrapper div!!!
                         // see http://stackoverflow.com/questions/10733080/absolutebottom-does-not-work
@@ -252,6 +256,13 @@
                         $image.replaceWith( $imagewithcaption );
                         //console.log($image);
                     });
+                });
+                var $copyright = $('.copyright');
+                var $a = $('<a>').attr({'target':'blank','href':copyright.url}).html(copyright.desc);
+                $a.appendTo($copyright);
+                $copyright.on('click',{'infos':copyright},function(event){
+                    //console.log(event.target);
+                    event.stopPropagation()
                 });
 		
 	})(jQuery);
